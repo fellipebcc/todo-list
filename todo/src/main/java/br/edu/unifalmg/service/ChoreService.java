@@ -143,10 +143,21 @@ public class ChoreService {
     }
 
     public String displayChores(){
+        if(isChoreListEmpty.test(chores)){
+            System.out.println("No chores to display");
+            return "No chores to display\n";
+        }
         System.out.println(this.toString());
         return this.toString();
     }
 
     private final Predicate<List<Chore>> isChoreListEmpty = choreList -> choreList.isEmpty();
+
+    @Override
+    public String toString(){
+        StringBuilder choresInformation = new StringBuilder();
+        this.chores.forEach(chore-> choresInformation.append(chore.toString()).append("\n"));
+        return choresInformation.toString();
+    }
 
 }
