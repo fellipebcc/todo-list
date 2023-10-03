@@ -142,6 +142,11 @@ public class ChoreService {
         }
     }
 
+    public String displayChores(){
+        System.out.println(this.toString());
+        return this.toString();
+    }
+
     private final Predicate<List<Chore>> isChoreListEmpty = choreList -> choreList.isEmpty();
 
 }
