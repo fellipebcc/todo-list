@@ -151,6 +151,18 @@ public class ChoreService {
         return this.toString();
     }
 
+    public void changeChore(String description, LocalDate date, String changedDescription, LocalDate changedDate){
+        return;
+    }
+
+    public void changeChore(String description, String changedDescription ,LocalDate date){
+        return;
+    }
+
+    public void changeChore(LocalDate date, LocalDate changedDate, String description){
+        return;
+    }
+
     private final Predicate<List<Chore>> isChoreListEmpty = choreList -> choreList.isEmpty();
 
     @Override

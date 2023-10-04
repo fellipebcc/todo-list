@@ -3,12 +3,14 @@ package br.edu.unifalmg.service;
 import br.edu.unifalmg.domain.Chore;
 import br.edu.unifalmg.enumerator.ChoreFilter;
 import br.edu.unifalmg.exception.*;
+import jdk.jshell.execution.LoaderDelegate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.util.ReflectionUtils;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -279,5 +281,75 @@ public class ChoreServiceTest {
                               "Descrição: Implementar código Deadline: 12/10/2023 Status: Incompleta\n",
                                service.displayChores());
     }
+
+    @Test
+    @DisplayName("#changeChore > When the description is invalid > throw an exception ")
+    void changeChoreWhenTheDescriptionIsInvalidThrowAnException() {
+        ChoreService service = new ChoreService();
+        service.addChore("Description",LocalDate.now());
+        assertAll(
+                ()-> assertThrows(InvalidDescriptionException.class, () -> {
+                    service.changeChore(service.getChores().get(0).getDescription(), null ,LocalDate.now());
+                }),
+                ()-> assertThrows(InvalidDescriptionException.class, () -> {
+                    service.changeChore(service.getChores().get(0).getDescription(),"",LocalDate.now());
+                })
+        );
+
+    }
+
+    @Test
+    @DisplayName("#changeChore > When deadline is in the past > throw an exception")
+    void changeChoreWhenDeadlineIsInThePastThrowException() {
+
+        ChoreService service = new ChoreService();
+        service.addChore("Original Description", LocalDate.now());
+
+        assertThrows(InvalidDeadlineException.class, () -> {
+            service.changeChore(service.getChores().get(0).getDeadline(), LocalDate.now().minusDays(1) ,service.getChores().get(0).getDescription());
+        });
+    }
+
+    @Test
+    @DisplayName("#changeChore > When change only the description and it is valid > change chore description")
+    void changeChoreWhenChangeOnlyTheDescriptionAndItIsValidChangeDescription() {
+        ChoreService service = new ChoreService();
+        String originalDescription = "Original Description";
+        service.addChore(originalDescription, LocalDate.now());
+
+        String newDescription = "New Description";
+        service.changeChore(originalDescription, newDescription, LocalDate.now());
+
+        assertEquals(newDescription, service.getChores().get(0).getDescription());
+    }
+
+    @Test
+    @DisplayName("#changeChore > When chore with given description and deadline does not exist > throw an exception")
+    void changeChoreWhenChoreWithGivenDescriptionDoesNotExistThrowException() {
+
+        ChoreService service = new ChoreService();
+
+        service.addChore("Description", LocalDate.now().plusDays(2));
+
+        assertThrows(ChoreNotFoundException.class, () -> {
+            service.changeChore("Nonexistent Chore", "New Description", LocalDate.now());
+        });
+    }
+
+    @Test
+    @DisplayName("#changeChore > When change only the deadline and it is valid > change chore deadline")
+    void changeChoreWhenChangeOnlyTheDeadlineAndItIsValidChangeDescription() {
+        ChoreService service = new ChoreService();
+        LocalDate originalDate = LocalDate.now();
+        service.addChore("Description", originalDate);
+        LocalDate newDate = LocalDate.now().plusDays(3);
+        String newDescription = "New Description";
+        service.changeChore(service.getChores().get(0).getDeadline(), newDate ,service.getChores().get(0).getDescription());
+
+        assertEquals(newDescription, service.getChores().get(0).getDescription());
+    }
+
+
+
 
 }
