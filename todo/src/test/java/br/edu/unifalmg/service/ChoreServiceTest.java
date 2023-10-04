@@ -244,4 +244,40 @@ public class ChoreServiceTest {
         );
     }
 
+    @Test
+    @DisplayName("#printChores > When the list is  empty > print: No chores to display")
+    void printChoresWhenTheListIsEmptyPrintNoChoresToDisplay() {
+        ChoreService service = new ChoreService();
+        assertEquals("No chores to display\n",service.displayChores());
+    }
+
+    @Test
+    @DisplayName("#printChores > When the list has one chore and it has completed status > print the information about the chore ")
+    void printChoresWhenTheListHasOneChoreAndItHasCompletedStatusPrintTheInformationAboutTheChore() {
+        ChoreService service = new ChoreService();
+        service.addChore("Escrever teste",LocalDate.of(2023,10,29));
+        service.getChores().get(0).setIsCompleted(true);
+        assertEquals("Descrição: Escrever teste Deadline: 29/10/2023 Status: Completa\n",service.displayChores());
+    }
+
+    @Test
+    @DisplayName("#printChores > When the list has one chore and it has uncompleted status > print the information about the chore ")
+    void printChoresWhenTheListHasOneChoreAndItHasUncompletedStatusPrintTheInformationAboutTheChore() {
+        ChoreService service = new ChoreService();
+        service.addChore("Escrever teste",LocalDate.of(2023,10,29));
+        assertEquals("Descrição: Escrever teste Deadline: 29/10/2023 Status: Incompleta\n",service.displayChores());
+    }
+
+    @Test
+    @DisplayName("#printChores > When the list has more than one chore > print the information about the chores")
+    void printChoresWhenTheListHasMoreThanOneChorePrintTheInformationAboutTheChores() {
+        ChoreService service = new ChoreService();
+        service.addChore("Escrever teste", LocalDate.of(2023, 10, 29));
+        service.getChores().get(0).setIsCompleted(true);
+        service.addChore("Implementar código", LocalDate.of(2023, 10, 12));
+        assertEquals("Descrição: Escrever teste Deadline: 29/10/2023 Status: Completa\n" +
+                              "Descrição: Implementar código Deadline: 12/10/2023 Status: Incompleta\n",
+                               service.displayChores());
+    }
+
 }
