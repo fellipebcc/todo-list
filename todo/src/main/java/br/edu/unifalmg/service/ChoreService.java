@@ -152,18 +152,24 @@ public class ChoreService {
     }
 
     public void changeChore(String description, LocalDate date, String changedDescription, LocalDate changedDate){
+
         return;
     }
 
-    public void changeChore(String description, String changedDescription ,LocalDate date){
+    public void changeChore(String description, LocalDate date,String changedDescription){
         return;
     }
 
-    public void changeChore(LocalDate date, LocalDate changedDate, String description){
+    public void changeChore(String description, LocalDate date, LocalDate changedDate){
         return;
     }
 
     private final Predicate<List<Chore>> isChoreListEmpty = choreList -> choreList.isEmpty();
+
+    private void verifyChore(String description, LocalDate date){
+
+    }
+
 
     @Override
     public String toString(){
