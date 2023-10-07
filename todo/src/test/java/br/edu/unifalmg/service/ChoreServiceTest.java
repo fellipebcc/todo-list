@@ -283,12 +283,14 @@ public class ChoreServiceTest {
     void changeChoreWhenTheDescriptionIsInvalidThrowAnException() {
         ChoreService service = new ChoreService();
         service.addChore("Description",LocalDate.now());
+        String choreDescription = service.getChores().get(0).getDescription();
+        LocalDate choreDate = service.getChores().get(0).getDeadline();
         assertAll(
                 ()-> assertThrows(InvalidDescriptionException.class, () -> {
-                    service.changeChore(service.getChores().get(0).getDescription(), null ,LocalDate.now());
+                    service.changeChore(choreDescription,choreDate, null ,choreDate);
                 }),
                 ()-> assertThrows(InvalidDescriptionException.class, () -> {
-                    service.changeChore(service.getChores().get(0).getDescription(),LocalDate.now(),"");
+                    service.changeChore(choreDescription,choreDate,"",choreDate);
                 })
         );
 
@@ -300,10 +302,10 @@ public class ChoreServiceTest {
 
         ChoreService service = new ChoreService();
         service.addChore("Original Description", LocalDate.now());
+        String choreDescription = service.getChores().get(0).getDescription();
+        LocalDate choreDate = service.getChores().get(0).getDeadline();
 
-        assertThrows(InvalidDeadlineException.class, () -> {
-            service.changeChore(service.getChores().get(0).getDescription(),service.getChores().get(0).getDeadline(),LocalDate.now().minusDays(1));
-        });
+        assertThrows(InvalidDeadlineException.class, () -> service.changeChore(choreDescription,choreDate,choreDescription,LocalDate.now().minusDays(5)));
     }
 
     @Test
@@ -312,11 +314,12 @@ public class ChoreServiceTest {
         ChoreService service = new ChoreService();
         String originalDescription = "Original Description";
         service.addChore(originalDescription, LocalDate.now());
-
+        String choreDescription = service.getChores().get(0).getDescription();
+        LocalDate choreDate = service.getChores().get(0).getDeadline();
         String newDescription = "New Description";
-        service.changeChore(originalDescription,LocalDate.now(), newDescription);
+        service.changeChore(choreDescription,choreDate,newDescription,choreDate);
 
-        assertEquals(newDescription, service.getChores().get(0).getDescription());
+        assertTrue(service.getChores().get(0).getDescription().equals(newDescription));
     }
 
     @Test
@@ -326,9 +329,13 @@ public class ChoreServiceTest {
         LocalDate originalDate = LocalDate.now();
 
         service.addChore("Description", originalDate);
+
+        String choreDescription = service.getChores().get(0).getDescription();
+        LocalDate choreDate = service.getChores().get(0).getDeadline();
+
         LocalDate newDate = LocalDate.now().plusDays(3);
 
-        service.changeChore(service.getChores().get(0).getDescription(),service.getChores().get(0).getDeadline(), newDate);
+        service.changeChore(choreDescription,choreDate,choreDescription,newDate);
 
         assertEquals(newDate, service.getChores().get(0).getDeadline());
     }
@@ -340,9 +347,10 @@ public class ChoreServiceTest {
         ChoreService service = new ChoreService();
 
         service.addChore("Description", LocalDate.now().plusDays(2));
-
+        String choreDescription = service.getChores().get(0).getDescription();
+        LocalDate choreDate = service.getChores().get(0).getDeadline();
         assertThrows(ChoreNotFoundException.class, () -> {
-            service.changeChore("Nonexistent Chore", LocalDate.now(), LocalDate.now().plusDays(5));
+            service.changeChore("Nonexistent Chore", LocalDate.now(),"Test",LocalDate.now().plusDays(3));
         });
     }
 
@@ -351,17 +359,16 @@ public class ChoreServiceTest {
     void changeChoreWhenChangeTheDeadlineAndDescriptionItIsValidChangeDeadlineAndDescription() {
         ChoreService service = new ChoreService();
         LocalDate originalDate = LocalDate.now();
-
         service.addChore("Description", originalDate);
-        LocalDate newDate = LocalDate.now().plusDays(3);
 
+        LocalDate newDate = LocalDate.now().plusDays(3);
         String newDescription = "New Description";
+
         service.changeChore(service.getChores().get(0).getDescription(),service.getChores().get(0).getDeadline(),newDescription,newDate);
         assertAll(
                 ()-> assertEquals(newDescription, service.getChores().get(0).getDescription()),
                 () -> assertEquals(newDate, service.getChores().get(0).getDeadline())
         );
     }
-
 
 }

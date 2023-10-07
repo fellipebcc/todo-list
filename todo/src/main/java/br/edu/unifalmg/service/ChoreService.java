@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -30,12 +31,7 @@ public class ChoreService {
      * @throws DuplicatedChoreException When the given chore already exists
      */
     public Chore addChore(String description, LocalDate deadline) {
-        if (Objects.isNull(description) || description.isEmpty()) {
-            throw new InvalidDescriptionException("The description cannot be null or empty");
-        }
-        if (Objects.isNull(deadline) || deadline.isBefore(LocalDate.now())) {
-            throw new InvalidDeadlineException("The deadline cannot be null or before the current date");
-        }
+        verifyChore(description,deadline);
         for (Chore chore : chores) {
             if (chore.getDescription().equals(description)
                     && chore.getDeadline().isEqual(deadline)) {
@@ -151,24 +147,33 @@ public class ChoreService {
         return this.toString();
     }
 
-    public void changeChore(String description, LocalDate date, String changedDescription, LocalDate changedDate){
-
-        return;
-    }
-
-    public void changeChore(String description, LocalDate date,String changedDescription){
-        return;
-    }
-
-    public void changeChore(String description, LocalDate date, LocalDate changedDate){
-        return;
-    }
-
-    private final Predicate<List<Chore>> isChoreListEmpty = choreList -> choreList.isEmpty();
-
-    private void verifyChore(String description, LocalDate date){
+    public void changeChore(String description, LocalDate deadline, String changedDescription, LocalDate changedDeadline){
+        verifyChore(changedDescription,changedDeadline);
+        boolean isChoreExist = this.chores.stream().anyMatch((chore) -> chore.getDescription().equals(description) && chore.getDeadline().isEqual(deadline));
+        if (!isChoreExist) {
+            throw new ChoreNotFoundException("Chore not found. Impossible to toggle!");
+        }
+        this.chores = this.chores.stream().map(chore -> {
+            if (!chore.getDescription().equals(description) && !chore.getDeadline().isEqual(deadline)) {
+                return chore;
+            }
+            chore.setDescription(changedDescription);
+            chore.setDeadline(changedDeadline);
+            return chore;
+        }).collect(Collectors.toList());
 
     }
+
+    private final Predicate<List<Chore>> isChoreListEmpty = List::isEmpty;
+
+    private void verifyChore(String description, LocalDate deadline){
+        if (Objects.isNull(description) || description.isEmpty())
+            throw new InvalidDescriptionException("The description cannot be null or empty");
+
+        if (Objects.isNull(deadline) || deadline.isBefore(LocalDate.now()))
+            throw new InvalidDeadlineException("The deadline cannot be null or before the current date");
+    }
+
 
 
     @Override
