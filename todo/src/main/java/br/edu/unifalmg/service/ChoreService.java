@@ -144,4 +144,12 @@ public class ChoreService {
 
     private final Predicate<List<Chore>> isChoreListEmpty = choreList -> choreList.isEmpty();
 
+    void listChores(ChoreService service){
+        if(service.getChores().isEmpty()){
+            throw new EmptyChoreListException("Chore is Empty");
+        }
+        service.getChores().stream().forEach(chore -> System.out.println("Description: " + chore.getDescription() +
+                " Deadline: " + chore.getDeadline() + " IsCompleted: " + chore.getIsCompleted()));
+    }
+
 }
