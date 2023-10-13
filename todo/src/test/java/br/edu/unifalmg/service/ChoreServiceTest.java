@@ -244,4 +244,24 @@ public class ChoreServiceTest {
         );
     }
 
+
+    @Test
+    @DisplayName("#ListsChores > When ListChores is not empty > print ListsChores")
+    void ListsChoresWhenListChoresIsNotEmptyPrintListChores(){
+        ChoreService service = new ChoreService();
+        service.getChores().add(new Chore("Chore #01", Boolean.FALSE, LocalDate.now()));
+        service.getChores().add(new Chore("Chore #02", Boolean.TRUE, LocalDate.now()));
+        assertFalse(service.getChores().isEmpty());
+        assertAll( () -> service.listsChores(service));
+    }
+
+    @Test
+    @DisplayName("#ListsChores > When ListChores is empty > Exception")
+    void ListChoresWhenListChoresIsEmptyException(){
+        ChoreService service = new ChoreService();
+        assertThrows(
+                EmptyChoreListException.class,() ->service.listsChores(service)
+        );
+    }
+
 }
