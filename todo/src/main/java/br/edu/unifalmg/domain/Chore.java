@@ -18,4 +18,9 @@ public class Chore {
 
     private LocalDate deadline;
 
+    @Override
+    public String toString() {
+        return "Descrição: " + description + " Deadline: " + deadline +
+                " Status: " + isCompleted;
+    }
 }

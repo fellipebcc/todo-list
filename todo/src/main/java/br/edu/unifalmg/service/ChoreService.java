@@ -5,9 +5,7 @@ import br.edu.unifalmg.enumerator.ChoreFilter;
 import br.edu.unifalmg.exception.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -140,6 +138,13 @@ public class ChoreService {
             default:
                 return this.chores;
         }
+    }
+    public void printChores (){
+        List<Chore> chores = getChores();
+        if (isChoreListEmpty.test(chores)) {
+            throw new EmptyChoreListException("Unable to print an empty list");
+        }
+        chores.forEach(System.out::println);
     }
 
     private final Predicate<List<Chore>> isChoreListEmpty = choreList -> choreList.isEmpty();

@@ -243,5 +243,28 @@ public class ChoreServiceTest {
                 () -> assertEquals(Boolean.FALSE, response.get(0).getIsCompleted())
         );
     }
+    @Test
+    @DisplayName("#printChores > When the list is empty > Throw an exception")
+    void printChoresWhenTheListIsEmptyThrowAnException() {
+        ChoreService service = new ChoreService();
+        assertThrows(EmptyChoreListException.class, () -> {
+            service.printChores();
+        });
+    }
+    @Test
+    @DisplayName("#printChores > When the list is not empty > Print the list")
+    void printChoresWhenTheListIsNotEmptyPrintTheList(){
+        ChoreService service = new ChoreService();
+        service.getChores().add(new Chore("Chore #01", Boolean.FALSE, LocalDate.now()));
+        service.getChores().add(new Chore("Chore #02", Boolean.TRUE, LocalDate.now()));
+        assertDoesNotThrow(() -> service.printChores());
+    }
+    @Test
+    @DisplayName("#printChores > When the list is unitary > Print the list")
+    void printChoresWhenTheListIsUnitaryPrintTheList(){
+        ChoreService service = new ChoreService();
+        service.getChores().add(new Chore("Chore #01", Boolean.FALSE, LocalDate.now()));
+        assertDoesNotThrow(() -> service.printChores());
+    }
 
 }
