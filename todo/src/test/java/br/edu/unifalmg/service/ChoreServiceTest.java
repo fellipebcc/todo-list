@@ -276,46 +276,46 @@ public class ChoreServiceTest {
     }
 
     @Test
-    @DisplayName("#editChore > Quando a descrição é editada com sucesso")
-    void editChoreQuandoDescricaoEEditadaComSucesso() {
+    @DisplayName("#editChore > When the description is successfully edited")
+    void editChoreWhenDescriptionIsSuccessfullyEdited() {
         ChoreService service = new ChoreService();
-        Chore chore = service.addChore("Descrição Antiga", LocalDate.now().plusDays(1));
+        Chore chore = service.addChore("Old Description", LocalDate.now().plusDays(1));
 
-        service.editChore(chore, "Nova Descrição", chore.getDeadline());
+        service.editChore(chore, "New Description", chore.getDeadline);
 
-        assertEquals("Nova Descrição", chore.getDescription());
+        assertEquals("New Description", chore.getDescription());
     }
 
     @Test
-    @DisplayName("#editChore > Quando o prazo é editado com sucesso")
-    void editChoreQuandoPrazoEEditadoComSucesso() {
+    @DisplayName("#editChore > When the deadline is successfully edited")
+    void editChoreWhenDeadlineIsSuccessfullyEdited() {
         ChoreService service = new ChoreService();
-        Chore chore = service.addChore("Descrição", LocalDate.now().plusDays(1));
-        LocalDate novoPrazo = LocalDate.now().plusDays(7);
+        Chore chore = service.addChore("Description", LocalDate.now().plusDays(1));
+        LocalDate newDeadline = LocalDate.now().plusDays(7);
 
-        service.editChore(chore, chore.getDescription(), novoPrazo);
+        service.editChore(chore, chore.getDescription(), newDeadline);
 
-        assertEquals(novoPrazo, chore.getDeadline());
+        assertEquals(newDeadline, chore.getDeadline());
     }
 
     @Test
-    @DisplayName("#editChore > Quando a edição com prazo inválido > Gera uma exceção")
-    void editChoreQuandoEdicaoComPrazoInvalidoGeraExcecao() {
+    @DisplayName("#editChore > When editing with an invalid deadline > Generates an exception")
+    void editChoreWhenEditingWithInvalidDeadlineGeneratesException() {
         ChoreService service = new ChoreService();
-        Chore chore = service.addChore("Descrição", LocalDate.now().plusDays(1));
+        Chore chore = service.addChore("Description", LocalDate.now().plusDays(1));
 
         assertThrows(InvalidDeadlineException.class, () -> {
-            service.editChore(chore, chore.getDescription(), LocalDate.now().minusDays(1));
-        });
+        service.editChore(chore, chore.getDescription(), LocalDate.now().minusDays(1));
+    });
     }
 
     @Test
-    @DisplayName("#editChore > Quando editando uma tarefa inexistente > Gera uma exceção")
-    void editChoreQuandoEditandoTarefaInexistenteGeraExcecao() {
+    @DisplayName("#editChore > When editing a nonexistent task > Generates an exception")
+    void editChoreWhenEditingNonexistentTaskGeneratesException() {
         ChoreService service = new ChoreService();
         assertThrows(ChoreNotFoundException.class, () -> {
-            service.editChore(null, "Nova Descrição", LocalDate.now());
-        });
+        service.editChore(null, "New Description", LocalDate.now());
+    });
     }
 
 }
