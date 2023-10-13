@@ -144,4 +144,23 @@ public class ChoreService {
 
     private final Predicate<List<Chore>> isChoreListEmpty = choreList -> choreList.isEmpty();
 
+ public List<Chore> editChore(String description, LocalDate deadline, String newDescription, LocalDate newDeadline){
+        boolean ischoreExist = this.chores.stream().anyMatch((chore) ->
+                chore.getDescription().equals(description) &&
+                        chore.getDeadline().isEqual(deadline)
+        );
+        if(!ischoreExist){
+            throw new ChoreNotFoundException("Chore not found,. Impossible to toggle");
+        }
+        for(Chore chore : chores){
+            if(chore.getDescription().equals(description) && chore.getDeadline().equals(deadline)) {
+                chore.setDescription(newDescription);
+                chore.setDeadline(newDeadline);
+            }
+        }
+        return this.chores;
+    }
+
+    private final Predicate<List<Chore>> isChoreListEmpty = chorelist -> chorelist.isEmpty();
+    
 }
