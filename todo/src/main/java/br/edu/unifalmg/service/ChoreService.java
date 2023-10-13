@@ -53,23 +53,6 @@ public class ChoreService {
         // Using Constructor with all arguments
         Chore chore = new Chore(description, Boolean.FALSE, deadline);
 
-
-//         Using Lombok's builder
-//
-//         Chore chore = Chore.builder()
-//                .description(description)
-//                .deadline(deadline)
-//                .isCompleted(false)
-//                .build();
-
-//         Using Getter and Setters
-//
-//         Chore chore = new Chore();
-//         chore.setDescription(description);
-//         chore.setDeadline(deadline);
-//         chore.setIsCompleted(Boolean.FALSE);
-
-
         chores.add(chore);
         return chore;
     }
@@ -141,6 +124,24 @@ public class ChoreService {
                 return this.chores;
         }
     }
+
+    public List<Chore> editChore(String description, LocalDate deadline, String newDescription, LocalDate newDeadline){
+        boolean choreExist = this.chores.stream().anyMatch((chore) ->
+                chore.getDescription().equals(description) &&
+                        chore.getDeadline().isEqual(deadline)
+        );
+        if(!choreExist){
+            throw new ChoreNotFoundException("Impossible to toggle, Chore does not exist.");
+        }
+        for(Chore chore: chores){
+            if(chore.getDescription().equals(description) && chore.getDeadline().equals(deadline)) {
+                chore.setDescription(newDescription);
+                chore.setDeadline(newDeadline);
+            }
+        }
+        return this.chores;
+    }
+    
 
     private final Predicate<List<Chore>> isChoreListEmpty = choreList -> choreList.isEmpty();
 
