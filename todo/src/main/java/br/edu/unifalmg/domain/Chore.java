@@ -1,9 +1,8 @@
-package br.edu.unifalmg.domain;
+package br.edu.unifal.domain;
 
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
 @Getter
 @Setter
@@ -17,5 +16,6 @@ public class Chore {
     private Boolean isCompleted;
 
     private LocalDate deadline;
+
 
 }
