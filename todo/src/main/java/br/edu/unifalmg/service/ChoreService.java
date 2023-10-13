@@ -130,6 +130,18 @@ public class ChoreService {
         }).collect(Collectors.toList());
     }
 
+    public void listarTarefas() {
+        if (chores.isEmpty()) {
+            System.out.println("A lista de tarefas está vazia.");
+        } else {
+            System.out.println("Lista de Tarefas:");
+            chores.forEach(chore -> {
+                System.out.println("Descrição: \"" + chore.getDescription() + "\" Deadline: " + chore.getDeadline() +
+                        " Status: " + (chore.getIsCompleted() ? "Completa" : "Incompleta"));
+            });
+        }
+    }
+
     public List<Chore> filterChores(ChoreFilter filter) {
         switch (filter) {
             case COMPLETED:
@@ -143,5 +155,4 @@ public class ChoreService {
     }
 
     private final Predicate<List<Chore>> isChoreListEmpty = choreList -> choreList.isEmpty();
-
 }

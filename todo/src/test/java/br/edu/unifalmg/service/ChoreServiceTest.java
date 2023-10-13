@@ -244,4 +244,10 @@ public class ChoreServiceTest {
         );
     }
 
+    @Test
+    @DisplayName("#listarTarefas > Quando a lista de tarefas está vazia > Deve imprimir mensagem de lista vazia")
+    void listarTarefasQuandoListaVaziaDeveImprimirMensagem() {
+        ChoreService service = new ChoreService();
+        assertDoesNotThrow(() -> service.listarTarefas());
+    }
 }
