@@ -144,4 +144,19 @@ public class ChoreService {
 
     private final Predicate<List<Chore>> isChoreListEmpty = choreList -> choreList.isEmpty();
 
+     public String printChores(){
+        if(isChoreListEmpty.test(this.chores)){
+            throw new EmptyChoreListException("Unable to remove a chore from an empty list");
+        }
+        StringBuilder retorno = new StringBuilder();
+        for(Chore chore : chores){
+            if(chore.getIsCompleted()) {
+                retorno.append("Description: ").append(chore.getDescription()).append(" - Deadline: ").append(chore.getDeadline()).append(" - Status: Completa\n");
+            }else {
+                retorno.append("Description: ").append(chore.getDescription()).append(" - Deadline: ").append(chore.getDeadline()).append(" - Status: Incompleta\n");
+            }
+        }
+        return retorno.toString();
+    }
+
 }
