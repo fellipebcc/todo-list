@@ -149,7 +149,6 @@ public class ChoreService {
         {
             throw new EmptyChoreListException("No chores at the moment");
         }
-
         String allChores = getChores().stream().map(Chore::toString).collect(Collectors.joining("\n"));
         System.out.println(allChores);
         return allChores;

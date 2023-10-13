@@ -247,7 +247,7 @@ public class ChoreServiceTest {
 
 
     @Test
-    @DisplayName("#printChores > When the list is not empty > print all chores")
+    @DisplayName("#displayAllChores > When the list is not empty > Display all chores")
      void printChoresWhenTheListIsNotEmptyPrintAllChores() {
         ChoreService service = new ChoreService();
 
@@ -256,13 +256,13 @@ public class ChoreServiceTest {
 
         String expectedOutput = "Description: Chore #01 Deadline: " + LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " Status: Completed\n" +
                 "Description: Chore #02 Deadline: " + LocalDate.now().plusDays(2).format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " Status: Not completed";
+
         String obtainedOutput = service.printChores();
 
         assertEquals(expectedOutput, obtainedOutput);
     }
     @Test
-    @DisplayName("#printChores > When the list is empty > throw EmptyChoreListException")
-
+    @DisplayName("#displayAllChores > When the list is empty > throw EmptyChoreListException")
     void printChoresWhenTheListIsEmptyThrowAnException() {
         ChoreService service = new ChoreService();
         assertThrows(EmptyChoreListException.class, service::printChores);
