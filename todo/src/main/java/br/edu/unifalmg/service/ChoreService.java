@@ -144,13 +144,13 @@ public class ChoreService {
 
     public void printChores() {
         if(chores.isEmpty()){
-            System.out.println("There are no Chores");
+            throw new EmptyChoreListException("There no are chores");
         }
         else{
             for (Chore chore : chores) {
-                System.out.println("Descrição: \"" + chore.getDescription() +
-                        "\" Deadline: " + chore.getDeadline() +
-                        " Status: " + (chore.getIsCompleted() ? "Completa" : "Incompleta"));
+                System.out.print("Descrição: " + chore.getDescription() +
+                        " Deadline: " + chore.getDeadline() +
+                        " Status: " + (chore.getIsCompleted() ? "Completa\n" : "Incompleta\n"));
             }
         }
     }

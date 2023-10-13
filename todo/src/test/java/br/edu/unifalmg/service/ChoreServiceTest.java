@@ -10,6 +10,7 @@ import org.junit.platform.commons.util.ReflectionUtils;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.io.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -244,4 +245,33 @@ public class ChoreServiceTest {
         );
     }
 
+    @Test
+    public void testPrintChoresWhenListIsEmpty() {
+        ChoreService choreService = new ChoreService();
+        //ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        //System.setOut(new PrintStream(outputStream));
+
+        assertThrows(EmptyChoreListException.class, choreService::printChores);
+
+        System.setOut(System.out); // Restaurar a saída padrão
+    }
+
+    @Test
+    public void testPrintChoresWithTasks() {
+        ChoreService choreService = new ChoreService();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+
+        choreService.addChore("Escrever teste", LocalDate.of(2023, 11, 29));
+        choreService.addChore("Implementar código", LocalDate.of(2023, 10, 20));
+
+        choreService.printChores();
+
+        assertEquals("Descrição: Escrever teste Deadline: 2023-11-29 Status: Incompleta\n" +
+                "Descrição: Implementar código Deadline: 2023-10-20 Status: Incompleta\n", outputStream.toString());
+
+        System.setOut(System.out); // Restaurar a saída padrão
+    }
 }
+
+
