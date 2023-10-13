@@ -23,11 +23,11 @@ public class ChoreService {
      * Method to add a new chore
      *
      * @param description The description of the chore
-     * @param deadline The deadline to fulfill the chore
+     * @param deadline    The deadline to fulfill the chore
      * @return Chore The new (and uncompleted) chore
      * @throws InvalidDescriptionException When the description is null or empty
-     * @throws InvalidDeadlineException When the deadline is null or empty
-     * @throws DuplicatedChoreException When the given chore already exists
+     * @throws InvalidDeadlineException    When the deadline is null or empty
+     * @throws DuplicatedChoreException    When the given chore already exists
      */
     public Chore addChore(String description, LocalDate deadline) {
         if (Objects.isNull(description) || description.isEmpty()) {
@@ -87,14 +87,14 @@ public class ChoreService {
      * Method to delete a given chore.
      *
      * @param description The description of the chore
-     * @param deadline The deadline of the chore
+     * @param deadline    The deadline of the chore
      */
     public void deleteChore(String description, LocalDate deadline) {
         if (isChoreListEmpty.test(this.chores)) {
             throw new EmptyChoreListException("Unable to remove a chore from an empty list");
         }
         boolean isChoreExist = this.chores.stream().anyMatch((chore -> chore.getDescription().equals(description)
-            && chore.getDeadline().isEqual(deadline)));
+                && chore.getDeadline().isEqual(deadline)));
         if (!isChoreExist) {
             throw new ChoreNotFoundException("The given chore does not exist.");
         }
@@ -104,11 +104,10 @@ public class ChoreService {
     }
 
     /**
-     *
      * Method to toggle a chore from completed to uncompleted and vice-versa.
      *
      * @param description The chore's description
-     * @param deadline The deadline to complete the chore
+     * @param deadline    The deadline to complete the chore
      * @throws ChoreNotFoundException When the chore is not found on the list
      */
     public void toggleChore(String description, LocalDate deadline) {
@@ -143,5 +142,13 @@ public class ChoreService {
     }
 
     private final Predicate<List<Chore>> isChoreListEmpty = choreList -> choreList.isEmpty();
+    public void displayAllChores() {
+        chores.forEach(chore -> {
+            System.out.println("Description: " + chore.getDescription());
+            System.out.println("Deadline: " + chore.getDeadline());
+            System.out.println("Status: " + (chore.getIsCompleted() ? "Completed" : "Incomplete"));
+            System.out.println();
+        });
+    }
 
 }

@@ -8,6 +8,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.util.ReflectionUtils;
 
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -192,11 +195,11 @@ public class ChoreServiceTest {
         service.getChores().add(new Chore("Chore #02", Boolean.TRUE, LocalDate.now()));
         List<Chore> response = service.filterChores(ChoreFilter.ALL);
         assertAll(
-            () -> assertEquals(2, response.size()),
-            () -> assertEquals("Chore #01", response.get(0).getDescription()),
-            () -> assertEquals(Boolean.FALSE, response.get(0).getIsCompleted()),
-            () -> assertEquals("Chore #02", response.get(1).getDescription()),
-            () -> assertEquals(Boolean.TRUE, response.get(1).getIsCompleted())
+                () -> assertEquals(2, response.size()),
+                () -> assertEquals("Chore #01", response.get(0).getDescription()),
+                () -> assertEquals(Boolean.FALSE, response.get(0).getIsCompleted()),
+                () -> assertEquals("Chore #02", response.get(1).getDescription()),
+                () -> assertEquals(Boolean.TRUE, response.get(1).getIsCompleted())
         );
     }
 
@@ -243,5 +246,28 @@ public class ChoreServiceTest {
                 () -> assertEquals(Boolean.FALSE, response.get(0).getIsCompleted())
         );
     }
+    @Test
+    @DisplayName("#displayAllChores > When the list is not empty > Display all tasks")
+    void displayAllChoresWhenListIsNotEmptyDisplayAllTasks() {
+        ChoreService service = new ChoreService();
+        service.addChore("Task #1", LocalDate.of(2023, 10, 13));
+        service.addChore("Task #2", LocalDate.of(2023, 10, 15));
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+
+        service.displayAllChores();
+
+        String expectedOutput = "Description: Task #1\n" +
+                "Deadline: 2023-10-13\n" +
+                "Status: Incomplete\n" +
+                "\n" +
+                "Description: Task #2\n" +
+                "Deadline: 2023-10-15\n" +
+                "Status: Incomplete";
+
+        assertEquals(expectedOutput, outputStream.toString().trim());
+    }
+
 
 }
