@@ -164,5 +164,26 @@ public class ChoreService {
             return chore;
         }).collect(Collectors.toList());
     }
+    public void editChore(String oldDescription, LocalDate oldDeadline, String newDescription, LocalDate newDeadline) {
+        boolean isChoreExist = this.chores.stream().anyMatch((chore) -> chore.getDescription().equals(oldDescription) && chore.getDeadline().isEqual(oldDeadline));
+        if (!isChoreExist) {
+            throw new ChoreNotFoundException("Chore not found. Impossible to edit!");
+        }
+
+        boolean isDuplicateChore = this.chores.stream().anyMatch((chore) -> chore.getDescription().equals(newDescription) && chore.getDeadline().isEqual(newDeadline));
+        if (isDuplicateChore) {
+            throw new DuplicatedChoreException("New chore description and deadline match an existing chore.");
+        }
+
+        this.chores = this.chores.stream().map(chore -> {
+            if (!chore.getDescription().equals(oldDescription) && !chore.getDeadline().isEqual(oldDeadline)) {
+                return chore;
+            }
+            chore.setDescription(newDescription);
+            chore.setDeadline(newDeadline);
+            return chore;
+        }).collect(Collectors.toList());
+    }
+
 
 }

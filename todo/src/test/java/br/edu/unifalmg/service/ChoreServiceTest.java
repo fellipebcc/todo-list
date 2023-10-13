@@ -243,7 +243,6 @@ public class ChoreServiceTest {
                 () -> assertEquals(Boolean.FALSE, response.get(0).getIsCompleted())
         );
     }
-
     @Test
     @DisplayName("#editChore > When trying to edit a chore that does not exist > Throw an exception")
     void editChoreWhenChoreDoesNotExistThrowAnException() {
@@ -276,6 +275,5 @@ public class ChoreServiceTest {
                 service.editChore("Chore #01", LocalDate.now(), "Chore #02", LocalDate.now().plusDays(2))
         );
     }
-
 
 }
