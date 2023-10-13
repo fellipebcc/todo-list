@@ -274,4 +274,27 @@ public class ChoreServiceTest {
         assertTrue(output.contains("Status: Incompleta"));
     }
 
+    @Test
+    @DisplayName("#editarTarefa > Quando editar uma tarefa existente > Deve atualizar a data de término da tarefa")
+    void editarTarefaQuandoEditarTarefaExistenteDeveAtualizarDataTermino() throws ChoreNotFoundException {
+        ChoreService service = new ChoreService();
+        LocalDate dataOriginal = LocalDate.now();
+        service.addChore("Tarefa 1", dataOriginal);
+
+        LocalDate novaData = LocalDate.now().plusDays(2);
+        assertDoesNotThrow(() -> service.editarTarefa("Tarefa 1", novaData));
+
+        assertEquals(novaData, service.getChores().get(0).getDeadline());
+    }
+
+    @Test
+    @DisplayName("#editarTarefa > Quando editar uma tarefa inexistente > Deve lançar uma exceção")
+    void editarTarefaQuandoEditarTarefaInexistenteDeveLancarExcecao() {
+        ChoreService service = new ChoreService();
+        LocalDate dataOriginal = LocalDate.now();
+        service.addChore("Tarefa 1", dataOriginal);
+
+        LocalDate novaData = LocalDate.now().plusDays(2);
+        assertThrows(ChoreNotFoundException.class, () -> service.editarTarefa("Tarefa 2", novaData));
+    }
 }

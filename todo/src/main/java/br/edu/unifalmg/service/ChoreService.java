@@ -137,6 +137,20 @@ public class ChoreService {
         }
     }
 
+    public void editarTarefa(String descricao, LocalDate novaData) throws ChoreNotFoundException {
+        boolean tarefaEncontrada = false;
+        for (Chore chore : chores) {
+            if (chore.getDescription().equals(descricao)) {
+                chore.setDeadline(novaData);
+                tarefaEncontrada = true;
+                break;
+            }
+        }
+        if (!tarefaEncontrada) {
+            throw new ChoreNotFoundException("Tarefa não encontrada: " + descricao);
+        }
+    }
+
     public List<Chore> filterChores(ChoreFilter filter) {
         switch (filter) {
             case COMPLETED:
