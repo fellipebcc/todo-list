@@ -142,6 +142,27 @@ public class ChoreService {
         }
     }
 
+    public void alterChore(Chore chore, String newDescription, LocalDate newDeadline){
+        if (Objects.isNull(newDescription) || newDescription.isEmpty()) {
+            throw new InvalidDescriptionException("The description cannot be null or empty");
+        }
+        if (Objects.isNull(newDeadline) || newDeadline.isBefore(LocalDate.now())) {
+            throw new InvalidDeadlineException("The deadline cannot be null or before the current date");
+        }
+        if (!isChoreExist(chore.getDescription(), chore.getDeadline())){
+            throw new ChoreNotFoundException("Cannot eddit since the given chore does not exist.");
+        }
+        if (isChoreExist(newDescription, newDeadline)){
+            throw new DuplicatedChoreException("Cannot eddit since the given chore already exists.");
+        }
+        chore.setDescription(newDescription);
+        chore.setDeadline(newDeadline);
+    }
+    private boolean isChoreExist (String description, LocalDate deadline) {
+        return getChores().stream().anyMatch((chore) -> chore.getDescription().equals(description)
+                && chore.getDeadline().isEqual(deadline));
+    }
+
     private final Predicate<List<Chore>> isChoreListEmpty = choreList -> choreList.isEmpty();
 
 }
