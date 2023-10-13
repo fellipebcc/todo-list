@@ -152,4 +152,18 @@ public class ChoreService {
             System.out.println("Status: " + (chore.getIsCompleted() ? "Completa" : "Incompleta"));
         }
     }    
+
+    public void editChore(Chore chore, String newDescription, LocalDate newDeadline) {
+        if (isChoreListEmpty.test(this.chores)) {
+            throw new EmptyChoreListException("Unable to edit a chore in an empty list");
+        }
+        
+        boolean isChoreExist = this.chores.stream().anyMatch(ch -> ch == chore);
+        if (!isChoreExist) {
+            throw new ChoreNotFoundException("The given chore does not exist.");
+        }
+
+        chore.setDescription(newDescription);
+        chore.setDeadline(newDeadline);
+    }
 }
