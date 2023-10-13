@@ -264,24 +264,24 @@ public class ChoreServiceTest {
                 service.printChores());
     }
 
-//    @Test
-//    @DisplayName("#editChores > When the chore doesn't exist > Throw an exception")
-//    void editChoresWhenTheChoreDoesnotExistThrowAnexception(){
-//        ChoreService service = new ChoreService();
-//        service.addChore("Chore 4",LocalDate.now().plusDays(2));
-//        assertThrows(ChoreNotFoundException.class,()-> service.editChore("Chore 1",LocalDate.now(),"Escovar os dentes",LocalDate.now().plusDays(3)));
-//    }
-//
-//    @Test
-//    @DisplayName("#editChores > When the chore exists > Update the chore")
-//    void editChoresWhenTheChoreExistsUpdateTheChore(){
-//        ChoreService service = new ChoreService();
-//        service.addChore("Chore 1",LocalDate.now().plusDays(3));
-//        List<Chore> response = service.editChore("Chore 1", LocalDate.now().plusDays(3), "Tomar banho",LocalDate.now().plusDays(4));
-//        assertAll(
-//                ()-> assertEquals("Tomar banho", response.get(0).getDescription()),
-//                ()-> assertEquals(LocalDate.now().plusDays(4) , response.get(0).getDeadline())
-//        );
-//    }
+    @Test
+    @DisplayName("#editChores > When the chore doesn't exist > Throw an exception")
+    void editChoresWhenTheChoreDoesnotExistThrowAnexception(){
+        ChoreService service = new ChoreService();
+        service.addChore("Chore 4",LocalDate.now().plusDays(2));
+        assertThrows(ChoreNotFoundException.class,()-> service.editChore("Chore 1",LocalDate.now(),"Escovar os dentes",LocalDate.now().plusDays(3)));
+    }
+
+    @Test
+    @DisplayName("#editChores > When the chore exists > Update the chore")
+    void editChoresWhenTheChoreExistsUpdateTheChore(){
+        ChoreService service = new ChoreService();
+        service.addChore("Chore 1",LocalDate.now().plusDays(3));
+        List<Chore> response = service.editChore("Chore 1", LocalDate.now().plusDays(3), "Tomar banho",LocalDate.now().plusDays(4));
+        assertAll(
+                ()-> assertEquals("Tomar banho", response.get(0).getDescription()),
+                ()-> assertEquals(LocalDate.now().plusDays(4) , response.get(0).getDeadline())
+        );
+    }
 
 }
