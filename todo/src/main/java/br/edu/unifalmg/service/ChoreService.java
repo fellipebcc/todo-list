@@ -130,6 +130,13 @@ public class ChoreService {
         }).collect(Collectors.toList());
     }
 
+    public void listarTarefas() {
+        for (Chore chore : chores) {
+            System.out.println("Descrição: " + chore.getDescription() + " Deadline: " + chore.getDeadline() +
+                    " Status: " + (chore.getIsCompleted() ? "Completa" : "Incompleta"));
+        }
+    }
+
     public List<Chore> filterChores(ChoreFilter filter) {
         switch (filter) {
             case COMPLETED:
