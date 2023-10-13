@@ -142,6 +142,38 @@ public class ChoreService {
         }
     }
 
+    public String printChores(){
+        if(isChoreListEmpty.test(this.chores)){
+            throw new EmptyChoreListException("Unable to remove a chore from an empty list");
+        }
+        StringBuilder retorno = new StringBuilder();
+        for(Chore chore : chores){
+            if(chore.getIsCompleted()) {
+                retorno.append("Description: ").append(chore.getDescription()).append(" - Deadline: ").append(chore.getDeadline()).append(" - Status: Completa\n");
+            }else {
+                retorno.append("Description: ").append(chore.getDescription()).append(" - Deadline: ").append(chore.getDeadline()).append(" - Status: Incompleta\n");
+            }
+        }
+        return retorno.toString();
+    }
+
+    public List<Chore> editChore(String description, LocalDate deadline, String newDescription, LocalDate newDeadline){
+        boolean ischoreExist = this.chores.stream().anyMatch((chore) ->
+                chore.getDescription().equals(description) &&
+                        chore.getDeadline().isEqual(deadline)
+        );
+        if(!ischoreExist){
+            throw new ChoreNotFoundException("Chore not found,. Impossible to toggle");
+        }
+        for(Chore chore : chores){
+            if(chore.getDescription().equals(description) && chore.getDeadline().equals(deadline)) {
+                chore.setDescription(newDescription);
+                chore.setDeadline(newDeadline);
+            }
+        }
+        return this.chores;
+    }
+
     private final Predicate<List<Chore>> isChoreListEmpty = choreList -> choreList.isEmpty();
 
 }

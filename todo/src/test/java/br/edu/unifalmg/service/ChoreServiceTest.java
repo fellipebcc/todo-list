@@ -244,4 +244,44 @@ public class ChoreServiceTest {
         );
     }
 
+    @Test
+    @DisplayName("#printChores > When the list is empty > throw exception")
+    void printChoresWhenTheListIsEmptyThrowAnException(){
+        ChoreService service = new ChoreService();
+        assertThrows(EmptyChoreListException.class, ()-> service.printChores());
+    }
+
+    @Test
+    @DisplayName("#printChores > When the list is not empty > Print the descriptions")
+    void printChoresWhenTheListIsNotEmptyPrintTheDescriptions(){
+        ChoreService service = new ChoreService();
+        service.addChore("Chore 1",LocalDate.now().plusDays(3));
+        service.addChore("Chore 2",LocalDate.now().plusDays(2));
+        service.addChore("Chore 3",LocalDate.now().plusDays(1));
+        assertEquals("Description: Chore 1 - Deadline: 2023-10-08 - Status: Incompleta\n" +
+                        "Description: Chore 2 - Deadline: 2023-10-07 - Status: Incompleta\n" +
+                        "Description: Chore 3 - Deadline: 2023-10-06 - Status: Incompleta\n",
+                service.printChores());
+    }
+
+    @Test
+    @DisplayName("#editChores > When the chore doesn't exist > Throw an exception")
+    void editChoresWhenTheChoreDoesnotExistThrowAnexception(){
+        ChoreService service = new ChoreService();
+        service.addChore("Chore 2",LocalDate.now().plusDays(5));
+        assertThrows(ChoreNotFoundException.class,()-> service.editChore("Chore 1",LocalDate.now(),"Lavar louça",LocalDate.now().plusDays(1)));
+    }
+
+    @Test
+    @DisplayName("#editChores > When the chore exists > Update the chore")
+    void editChoresWhenTheChoreExistsUpdateTheChore(){
+        ChoreService service = new ChoreService();
+        service.addChore("Chore 1",LocalDate.now().plusDays(3));
+        List<Chore> response = service.editChore("Chore 1", LocalDate.now().plusDays(3), "Lavar louca",LocalDate.now().plusDays(1));
+        assertAll(
+                ()-> assertEquals("Lavar louca", response.get(0).getDescription()),
+                ()-> assertEquals(LocalDate.now().plusDays(1) , response.get(0).getDeadline())
+        );
+    }
+
 }
