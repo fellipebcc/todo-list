@@ -142,6 +142,15 @@ public class ChoreService {
         }
     }
 
+    public void printChores() {
+        for (Chore chore : chores) {
+            System.out.println("Descrição: \"" + chore.getDescription() +
+                    "\" Deadline: " + chore.getDeadline() +
+                    " Status: " + (chore.getIsCompleted() ? "Completa" : "Incompleta"));
+        }
+    }
+
+
     private final Predicate<List<Chore>> isChoreListEmpty = choreList -> choreList.isEmpty();
 
 }
