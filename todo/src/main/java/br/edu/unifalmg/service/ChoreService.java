@@ -130,6 +130,27 @@ public class ChoreService {
         }).collect(Collectors.toList());
     }
 
+    public void listarTarefas() {
+        for (Chore chore : chores) {
+            System.out.println("Descrição: " + chore.getDescription() + " Deadline: " + chore.getDeadline() +
+                    " Status: " + (chore.getIsCompleted() ? "Completa" : "Incompleta"));
+        }
+    }
+
+    public void editarTarefa(String descricao, LocalDate novaData) throws ChoreNotFoundException {
+        boolean tarefaEncontrada = false;
+        for (Chore chore : chores) {
+            if (chore.getDescription().equals(descricao)) {
+                chore.setDeadline(novaData);
+                tarefaEncontrada = true;
+                break;
+            }
+        }
+        if (!tarefaEncontrada) {
+            throw new ChoreNotFoundException("Tarefa não encontrada: " + descricao);
+        }
+    }
+
     public List<Chore> filterChores(ChoreFilter filter) {
         switch (filter) {
             case COMPLETED:
