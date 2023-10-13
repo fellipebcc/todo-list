@@ -142,6 +142,42 @@ public class ChoreService {
         }
     }
 
+    public List<Chore> editChore(String description, LocalDate deadline, String newDescription, LocalDate newDeadline){
+        boolean choreExist = this.chores.stream().anyMatch((chore) ->
+                chore.getDescription().equals(description) &&
+                        chore.getDeadline().isEqual(deadline)
+        );
+        if(!choreExist){
+            throw new ChoreNotFoundException("Impossible to toggle, Chore does not exist.");
+        }
+        for(Chore chore: chores){
+            if(chore.getDescription().equals(description) && chore.getDeadline().equals(deadline)) {
+                chore.setDescription(newDescription);
+                chore.setDeadline(newDeadline);
+            }
+        }
+        return this.chores;
+    }
+
+    public String printAllChores(){
+        if(isChoreListEmpty.test(this.chores)){
+            throw new EmptyChoreListException("Unable to remove a chore from an empty list");
+        }
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        for(Chore chore: chores){
+            if(chore.getIsCompleted()) {
+                sb.append("Chore ").append(i).append(" --> Description: ").append(chore.getDescription()).append(" - Deadline: ").append(chore.getDeadline()).append(" - Status: Complete\n");
+            }
+            else {
+                sb.append("Chore ").append(i).append("Description: ").append(chore.getDescription()).append(" - Deadline: ").append(chore.getDeadline()).append(" - Status: Incomplete\n");
+            }
+            i++;
+        }
+        return sb.toString(); // return the String builder converted to a string
+    }
+
+
     private final Predicate<List<Chore>> isChoreListEmpty = choreList -> choreList.isEmpty();
 
 }
