@@ -8,6 +8,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.util.ReflectionUtils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -242,6 +244,35 @@ public class ChoreServiceTest {
                 () -> assertEquals("Chore #01", response.get(0).getDescription()),
                 () -> assertEquals(Boolean.FALSE, response.get(0).getIsCompleted())
         );
+    }
+
+    @Test
+    @DisplayName("#displayAllChores > When the list is empty > Display an empty list")
+    void displayAllChoresWhenListIsEmptyDisplayEmptyList() {
+        ChoreService service = new ChoreService();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        service.displayAllChores();
+        String output = outputStream.toString().trim();
+        assertEquals("", output);
+    }
+
+    @Test
+    @DisplayName("#displayAllChores > When the list is not empty > Display all tasks")
+    void displayAllChoresWhenListIsNotEmptyDisplayAllTasks() {
+        ChoreService service = new ChoreService();
+        service.addChore("Task #1", LocalDate.now());
+        service.addChore("Task #2", LocalDate.now().plusDays(2));
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+
+        service.displayAllChores();
+
+        String output = outputStream.toString().trim();
+        assertTrue(output.contains("Description: Task #1 Deadline:"));
+        assertTrue(output.contains("Description: Task #2 Deadline:"));
+        assertTrue(output.contains("Status: Incomplete"));
     }
 
 }

@@ -143,5 +143,13 @@ public class ChoreService {
     }
 
     private final Predicate<List<Chore>> isChoreListEmpty = choreList -> choreList.isEmpty();
-
+    
+    public void displayAllChores() {
+        System.out.println("Todas as Tarefas:");
+        for (Chore chore : chores) {
+            System.out.println("Descrição: " + chore.getDescription());
+            System.out.println("Deadline: " + chore.getDeadline());
+            System.out.println("Status: " + (chore.getIsCompleted() ? "Completa" : "Incompleta"));
+        }
+    }    
 }
