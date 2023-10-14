@@ -151,4 +151,21 @@ public class ChoreService {
         service.getChores().stream().forEach(chore -> System.out.println("Description: " + chore.getDescription() +
                 " Deadline: " + chore.getDeadline() + " IsCompleted: " + chore.getIsCompleted()));
     }
+
+    public Chore editChore(ChoreService service,int index,Chore changes){
+        if(service.getChores().isEmpty()){
+            throw new EmptyChoreListException("ChoreService is Empty");
+        }else{
+            if(changes.getIsCompleted()!=null){
+                service.getChores().get(index).setIsCompleted(changes.getIsCompleted());
+            }
+            if(changes.getDeadline()!=null){
+                service.getChores().get(index).setDeadline(changes.getDeadline());
+            }
+            if(changes.getDescription()!=null){
+                service.getChores().get(index).setDescription(changes.getDescription());
+            }
+        }
+        return service.getChores().get(index);
+    }
 }
