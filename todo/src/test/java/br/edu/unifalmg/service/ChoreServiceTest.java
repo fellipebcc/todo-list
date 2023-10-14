@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.util.ReflectionUtils;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -244,4 +245,25 @@ public class ChoreServiceTest {
         );
     }
 
+    @Test
+    @DisplayName("#showAllChores > When there are chores > Show all chores")
+    void showAllChoresWhenThereAreChores() {
+        ChoreService service = new ChoreService();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate date = LocalDate.now();
+        service.getChores().add(new Chore("Chore #01", Boolean.FALSE, date));
+        service.getChores().add(new Chore("Chore #02", Boolean.TRUE, date.plusDays(5)));
+
+        String expected = "Descrição: Chore #01 Deadline: " + date.format(format) + " Status: Incompleta\n" +
+                "Descrição: Chore #02 Deadline: " + date.plusDays(5).format(format) + " Status: Completa";
+
+        assertEquals(expected, service.showAllChores());
+    }
+
+    @Test
+    @DisplayName("#showAllChores > When there are no chores > throw exception")
+    void throwExceptionWhenThereArentChores() {
+        ChoreService service = new ChoreService();
+        assertThrows(EmptyChoreListException.class, service::showAllChores);
+    }
 }

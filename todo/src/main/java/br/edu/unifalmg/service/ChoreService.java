@@ -5,6 +5,7 @@ import br.edu.unifalmg.enumerator.ChoreFilter;
 import br.edu.unifalmg.exception.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -143,5 +144,23 @@ public class ChoreService {
     }
 
     private final Predicate<List<Chore>> isChoreListEmpty = choreList -> choreList.isEmpty();
+
+    public String showAllChores() throws EmptyChoreListException{
+        if (isChoreListEmpty.test(this.chores)) throw new EmptyChoreListException("There are no chores to list.");
+
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        String choresList =  getChores().stream().map((chore) -> {
+            String status = chore.getIsCompleted() ? "Completa" : "Incompleta";
+            return "Descrição: " + chore.getDescription()
+                    + " Deadline: " + chore.getDeadline().format(format)
+                    + " Status: " + status;
+
+        }).collect(Collectors.joining("\n"));
+
+        System.out.println(choresList);
+
+        return choresList;
+    }
 
 }
