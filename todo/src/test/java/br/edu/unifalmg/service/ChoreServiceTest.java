@@ -272,6 +272,41 @@ public class ChoreServiceTest {
 
         System.setOut(System.out); // Restaurar a saída padrão
     }
+
+    @Test
+    public void testEditChoreDescription() {
+        ChoreService choreService = new ChoreService();
+        choreService.addChore("Tarefa antiga", LocalDate.of(2023, 10, 15));
+
+        choreService.editChore("Tarefa antiga", LocalDate.of(2023, 10, 15), "Tarefa nova", LocalDate.of(2023, 10, 20));
+
+        // Verifique se a descrição e a data de término foram alteradas
+        assertEquals("Tarefa nova", choreService.getChores().get(0).getDescription());
+        assertEquals(LocalDate.of(2023, 10, 20), choreService.getChores().get(0).getDeadline());
+    }
+
+    @Test
+    public void testEditChoreDeadline() {
+        ChoreService choreService = new ChoreService();
+        choreService.addChore("Tarefa", LocalDate.of(2023, 10, 15));
+
+        choreService.editChore("Tarefa", LocalDate.of(2023, 10, 15), "Tarefa", LocalDate.of(2023, 10, 20));
+
+        // Verifique se apenas o prazo (deadline) foi alterado
+        assertEquals("Tarefa", choreService.getChores().get(0).getDescription());
+        assertEquals(LocalDate.of(2023, 10, 20), choreService.getChores().get(0).getDeadline());
+    }
+
+    @Test
+    public void testEditChoreNotFound() {
+        ChoreService choreService = new ChoreService();
+        choreService.addChore("Tarefa antiga", LocalDate.of(2023, 10, 15));
+
+        // Tente editar uma tarefa que não existe
+        assertThrows(ChoreNotFoundException.class, () -> {
+            choreService.editChore("Tarefa inexistente", LocalDate.of(2023, 10, 15), "Tarefa nova", LocalDate.of(2023, 10, 20));
+        });
+    }
 }
 
 
