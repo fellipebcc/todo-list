@@ -244,4 +244,121 @@ public class ChoreServiceTest {
         );
     }
 
+
+    @Test
+    @DisplayName("#ListsChores > When ListChores is not empty > print ListsChores")
+    void ListsChoresWhenListChoresIsNotEmptyPrintListChores(){
+        ChoreService service = new ChoreService();
+        service.getChores().add(new Chore("Chore #01", Boolean.FALSE, LocalDate.now()));
+        service.getChores().add(new Chore("Chore #02", Boolean.TRUE, LocalDate.now()));
+        assertFalse(service.getChores().isEmpty());
+        assertAll( () -> service.listsChores(service));
+    }
+
+    @Test
+    @DisplayName("#ListsChores > When ListChores is empty > Exception")
+    void ListChoresWhenListChoresIsEmptyException(){
+        ChoreService service = new ChoreService();
+        assertThrows(
+                EmptyChoreListException.class,() ->service.listsChores(service)
+        );
+    }
+    @Test
+    @DisplayName("#editChore > When chores is empty > exception")
+    void editChoresWhenChoreIsEmptyException(){
+        ChoreService service = new ChoreService();
+        assertThrows(
+                EmptyChoreListException.class,()->service.editChore(service,0,null)
+        );
+    }
+
+    @Test
+    @DisplayName("#editChores >  When chores no changed > return chore")
+    void editChoresWhenChoresNoChangedReturnChore(){
+        ChoreService service = new ChoreService();
+        service.getChores().add(new Chore("Chore", Boolean.FALSE, LocalDate.now()));
+        service.editChore(service, 0, new Chore("Chore modified", null, null));
+        assertEquals(Boolean.FALSE, service.getChores().get(0).getIsCompleted());
+        assertEquals("Chore modified",  service.getChores().get(0).getDescription());
+        assertEquals(LocalDate.now(), service.getChores().get(0).getDeadline());
+    }
+
+    @Test
+    @DisplayName("#editChores > When chores edit description > return chore")
+    void editChoresWhenChoreEditDescriptionReturnChore(){
+        ChoreService service = new ChoreService();
+        service.getChores().add(new Chore("Chore", Boolean.FALSE, LocalDate.now()));
+        service.editChore(service, 0, new Chore("Chore modified", null, null));
+        assertEquals(Boolean.FALSE, service.getChores().get(0).getIsCompleted());
+        assertEquals("Chore modified",  service.getChores().get(0).getDescription());
+        assertEquals(LocalDate.now(), service.getChores().get(0).getDeadline());
+    }
+
+    @Test
+    @DisplayName("#editChores > When chores edit status > return chore")
+    void editChoresWhenChoreEditStatusReturnChore(){
+        ChoreService service = new ChoreService();
+        service.getChores().add(new Chore("Chore", Boolean.FALSE, LocalDate.now()));
+        service.editChore(service, 0, new Chore(null, Boolean.TRUE, null));
+        assertEquals(LocalDate.now(), service.getChores().get(0).getDeadline());
+        assertEquals("Chore",  service.getChores().get(0).getDescription());
+        assertEquals(Boolean.TRUE, service.getChores().get(0).getIsCompleted());
+    }
+
+    @Test
+    @DisplayName("#editChores > When chores edit deadline > return chore")
+    void editChoresWhenChoreEditDeadlineReturnChore(){
+        ChoreService service = new ChoreService();
+        service.getChores().add(new Chore("Chore", Boolean.FALSE, LocalDate.now()));
+        service.editChore(service, 0, new Chore(null, null, LocalDate.now().plusDays(7)));
+        assertEquals("Chore",  service.getChores().get(0).getDescription());
+        assertEquals(LocalDate.now().plusDays(7), service.getChores().get(0).getDeadline());
+        assertEquals(Boolean.FALSE, service.getChores().get(0).getIsCompleted());
+    }
+
+    @Test
+    @DisplayName("#editChores > When chores edit description and status > return  chore")
+    void editChoresWhenChoreEditDescriptionAndStatusReturnChore(){
+        ChoreService service = new ChoreService();
+        service.getChores().add(new Chore("Chore", Boolean.FALSE, LocalDate.now()));
+        service.editChore(service, 0, new Chore("Chore modified", Boolean.TRUE, null));
+        assertEquals(Boolean.TRUE, service.getChores().get(0).getIsCompleted());
+        assertEquals("Chore modified",  service.getChores().get(0).getDescription());
+        assertEquals(LocalDate.now(), service.getChores().get(0).getDeadline());
+    }
+
+    @Test
+    @DisplayName("#editChores > When chores edit description and deadline > return chore")
+    void editChoresWhenChoreEditDescriptionAndDeadLineReturnChore(){
+        ChoreService service = new ChoreService();
+        service.getChores().add(new Chore("Chore", Boolean.FALSE, LocalDate.now()));
+        service.editChore(service, 0, new Chore("Chore modified", null, LocalDate.now().plusDays(9)));
+        assertEquals(LocalDate.now().plusDays(9), service.getChores().get(0).getDeadline());
+        assertEquals("Chore modified",  service.getChores().get(0).getDescription());
+        assertEquals(Boolean.FALSE, service.getChores().get(0).getIsCompleted());
+
+    }
+
+    @Test
+    @DisplayName("#editChores > When chores edit deadline and status > return chore")
+    void editChoresWhenChoreEditStatusAndDeadLineReturnChore(){
+        ChoreService service = new ChoreService();
+        service.getChores().add(new Chore("Chore", Boolean.FALSE, LocalDate.now()));
+        service.editChore(service, 0, new Chore(null, Boolean.TRUE, LocalDate.now().plusDays(15)));
+        assertEquals("Chore",  service.getChores().get(0).getDescription());
+        assertEquals(LocalDate.now().plusDays(15), service.getChores().get(0).getDeadline());
+        assertEquals(Boolean.TRUE, service.getChores().get(0).getIsCompleted());
+    }
+
+    @Test
+    @DisplayName("#editChores > When chores edit Deadline, status and description > return chore")
+    void editChoresWhenChoreEditDescriptionStatusAndDeadLineReturnChore(){
+        ChoreService service = new ChoreService();
+        service.getChores().add(new Chore("Chore", Boolean.FALSE, LocalDate.now()));
+        service.editChore(service, 0, new Chore("Chore modified", Boolean.TRUE, LocalDate.now().plusDays(4)));
+        assertEquals(Boolean.TRUE, service.getChores().get(0).getIsCompleted());
+        assertEquals(LocalDate.now().plusDays(4), service.getChores().get(0).getDeadline());
+        assertEquals("Chore modified",  service.getChores().get(0).getDescription());
+    }
+
 }
