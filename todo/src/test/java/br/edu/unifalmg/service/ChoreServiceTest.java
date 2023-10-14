@@ -244,4 +244,63 @@ public class ChoreServiceTest {
         );
     }
 
+    @Test
+    @DisplayName("#editChore > When the chore is null > throws exception")
+    void editChoreWhenChoreDescriptionIsInvalid() {
+        ChoreService service = new ChoreService();
+        Chore chosenChore = new Chore("Chore #01", Boolean.FALSE, LocalDate.now());
+        Chore blankDescriptionChore = new Chore("", Boolean.TRUE, LocalDate.now());
+        Chore nullDescriptionChore = new Chore("", Boolean.TRUE, LocalDate.now());
+
+        service.getChores().add(chosenChore);
+        assertAll(
+                () -> assertThrows(InvalidDescriptionException.class, () -> service.editChore(chosenChore, nullDescriptionChore)),
+                () -> assertThrows(InvalidDescriptionException.class, () -> service.editChore(chosenChore, blankDescriptionChore))
+        );
+    }
+
+    @Test
+    @DisplayName("#editChore > When the chore Already Exists > throws exception")
+    void editChoreWhenEditedChoreAlreadyExists() {
+        ChoreService service = new ChoreService();
+        Chore chosenChore = new Chore("Chore #01", Boolean.FALSE, LocalDate.now());
+        Chore alreadyExistentChore = new Chore("Chore #01", Boolean.FALSE, LocalDate.now());
+
+        service.getChores().add(chosenChore);
+        assertThrows(DuplicatedChoreException.class, () -> service.editChore(chosenChore, alreadyExistentChore));
+    }
+
+    @Test
+    @DisplayName("#editChore > When the chore Already Exists > throws exception")
+    void editChoreWhenChosenChoreDoesntExist() {
+        ChoreService service = new ChoreService();
+        Chore chosenChore = new Chore("Chore #01", Boolean.FALSE, LocalDate.now());
+        Chore newChore = new Chore("Chore #02", Boolean.FALSE, LocalDate.now());
+
+        service.getChores().add(chosenChore);
+        assertThrows(ChoreNotFoundException.class, () -> service.editChore(newChore, newChore));
+    }
+
+    @Test
+    @DisplayName("#editChore > When the chore is Already completed > throws exception")
+    void editChoreWhenChosenChoreIsAlreadyCompleted() {
+        ChoreService service = new ChoreService();
+        Chore chosenChore = new Chore("Chore #01", Boolean.TRUE, LocalDate.now());
+        Chore newChore = new Chore("Chore #02", Boolean.FALSE, LocalDate.now());
+
+        service.getChores().add(chosenChore);
+        assertThrows(ChoreAlreadyCompletedException.class, () -> service.editChore(chosenChore, newChore));
+    }
+
+    @Test
+    @DisplayName("#editChore > When the chores are valid > throws exception")
+    void editChoreWhenChosenChoreAndNewChoreAreValid() {
+        ChoreService service = new ChoreService();
+        Chore chosenChore = new Chore("Chore #01", Boolean.FALSE, LocalDate.now());
+        Chore newChore = new Chore("Chore #02", Boolean.FALSE, LocalDate.now());
+
+        service.getChores().add(chosenChore);
+        service.editChore(chosenChore, newChore);
+        assertEquals(service.getChores().get(0), newChore);
+    }
 }

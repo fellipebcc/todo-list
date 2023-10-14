@@ -19,6 +19,13 @@ public class ChoreService {
         chores = new ArrayList<>();
     }
 
+    private final Predicate<List<Chore>> isChoreListEmpty = choreList -> choreList.isEmpty();
+
+    private boolean isChoreExist(String description, LocalDate deadline){
+        return this.chores.stream().anyMatch((chore -> chore.getDescription().equals(description)
+                && chore.getDeadline().isEqual(deadline)));
+    }
+
     /**
      * Method to add a new chore
      *
@@ -93,9 +100,8 @@ public class ChoreService {
         if (isChoreListEmpty.test(this.chores)) {
             throw new EmptyChoreListException("Unable to remove a chore from an empty list");
         }
-        boolean isChoreExist = this.chores.stream().anyMatch((chore -> chore.getDescription().equals(description)
-            && chore.getDeadline().isEqual(deadline)));
-        if (!isChoreExist) {
+
+        if (!isChoreExist(description, deadline)) {
             throw new ChoreNotFoundException("The given chore does not exist.");
         }
 
@@ -112,8 +118,7 @@ public class ChoreService {
      * @throws ChoreNotFoundException When the chore is not found on the list
      */
     public void toggleChore(String description, LocalDate deadline) {
-        boolean isChoreExist = this.chores.stream().anyMatch((chore) -> chore.getDescription().equals(description) && chore.getDeadline().isEqual(deadline));
-        if (!isChoreExist) {
+        if (!isChoreExist(description, deadline)) {
             throw new ChoreNotFoundException("Chore not found. Impossible to toggle!");
         }
 
@@ -141,7 +146,28 @@ public class ChoreService {
                 return this.chores;
         }
     }
+    Chore editChore (Chore chosenChore, Chore editedChore) {
 
-    private final Predicate<List<Chore>> isChoreListEmpty = choreList -> choreList.isEmpty();
+        if(Objects.isNull(editedChore.getDescription())
+                || editedChore.getDescription().isEmpty()
+                || editedChore.getDescription().isBlank()
+        )
+            throw new InvalidDescriptionException("Description can't be null or empty");
+
+        if (isChoreExist(editedChore.getDescription(), editedChore.getDeadline()))
+            throw new DuplicatedChoreException("New chore already exists");
+
+
+        if(!isChoreExist(chosenChore.getDescription(), chosenChore.getDeadline()))
+            throw new ChoreNotFoundException("Chosen chore doesn't exist.");
+
+        if(chosenChore.getIsCompleted())
+            throw new ChoreAlreadyCompletedException("Chosen chore is already completed.");
+
+        int index = getChores().indexOf(chosenChore);
+        this.chores.set(index, editedChore);
+
+        return chosenChore;
+    }
 
 }
