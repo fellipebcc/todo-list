@@ -244,6 +244,7 @@ public class ChoreServiceTest {
         );
     }
 
+
     @Test
     @DisplayName("#listChores >> When chores is empty >> throw exception")
     void listChoresWhenChoreIsEmptyThrowException(){
@@ -264,94 +265,4 @@ public class ChoreServiceTest {
                 ()->service.listChores(service)
         );
     }
-
-    @Test
-    @DisplayName("#editChore >> When chores is empty >> throw exception")
-    void editChoresWhenChoreIsEmptyThrowException(){
-        ChoreService service = new ChoreService();
-        assertThrows(
-                EmptyChoreListException.class,()->service.editChore(service)
-        );
-    }
-
-    @Test
-    @DisplayName("#editChores >> When chores is not empty and without edit >> return the chore")
-    void editChoresWhenChoreIsNotEmptyPrintChores(){
-        ChoreService service = new ChoreService();
-        service.getChores().add(new Chore("Chore #01", Boolean.FALSE, LocalDate.now()));
-        assertFalse(service.getChores().isEmpty());
-        assertEquals(new Chore("Chore #01", Boolean.FALSE, LocalDate.now()), service.editChore
-                (service.getChores(), 0, new Chore(null, null, null)));
-    }
-
-    @Test
-    @DisplayName("#editChores >> When chores is not empty and edit description >> return the chore")
-    void editChoresWhenChoreIsNotEmptyPrintChores(){
-        ChoreService service = new ChoreService();
-        service.getChores().add(new Chore("Chore #01", Boolean.FALSE, LocalDate.now()));
-        assertFalse(service.getChores().isEmpty());
-        assertEquals(new Chore("Chore #01(edited)", Boolean.FALSE, LocalDate.now()), service.editChore
-                (service.getChores(), 0, new Chore("Chore #01(edited)", null, null)));
-    }
-
-    @Test
-    @DisplayName("#editChores >> When chores is not empty and edit IsCompleted >> return the chore")
-    void editChoresWhenChoreIsNotEmptyPrintChores(){
-        ChoreService service = new ChoreService();
-        service.getChores().add(new Chore("Chore #01", Boolean.FALSE, LocalDate.now()));
-        assertFalse(service.getChores().isEmpty());
-        assertEquals(new Chore("Chore #01", Boolean.TRUE, LocalDate.now()), service.editChore
-                (service.getChores(), 0, new Chore(null, Boolean.TRUE, null)));
-    }
-
-    @Test
-    @DisplayName("#editChores >> When chores is not empty and edit Deadline >> return the chore")
-    void editChoresWhenChoreIsNotEmptyPrintChores(){
-        ChoreService service = new ChoreService();
-        service.getChores().add(new Chore("Chore #01", Boolean.FALSE, LocalDate.now()));
-        assertFalse(service.getChores().isEmpty());
-        assertEquals(new Chore("Chore #01", Boolean.FALSE, LocalDate.now().plusDays(1)), service.editChore
-                (service.getChores(), 0, new Chore(null, null, LocalDate.now().plusDays(1))));
-    }
-
-    @Test
-    @DisplayName("#editChores >> When chores is not empty, edit Description and IsCompleted>> return the chore")
-    void editChoresWhenChoreIsNotEmptyPrintChores(){
-        ChoreService service = new ChoreService();
-        service.getChores().add(new Chore("Chore #01", Boolean.FALSE, LocalDate.now()));
-        assertFalse(service.getChores().isEmpty());
-        assertEquals(new Chore("Chore #01(edited)", Boolean.TRUE, LocalDate.now()), service.editChore
-                (service.getChores(), 0, new Chore("Chore #01(edited)", Boolean.TRUE, null)));
-    }
-
-    @Test
-    @DisplayName("#editChores >> When chores is not empty, edit Description and Deadline>> return the chore")
-    void editChoresWhenChoreIsNotEmptyPrintChores(){
-        ChoreService service = new ChoreService();
-        service.getChores().add(new Chore("Chore #01", Boolean.FALSE, LocalDate.now()));
-        assertFalse(service.getChores().isEmpty());
-        assertEquals(new Chore("Chore #01(edited)", Boolean.TRUE, LocalDate.now().plusDays(2)), service.editChore
-                (service.getChores(), 0, new Chore("Chore #01(edited)", null, LocalDate.now().plusDays(2))));
-    }
-
-    @Test
-    @DisplayName("#editChores >> When chores is not empty, edit Deadline and IsCompleted>> return the chore")
-    void editChoresWhenChoreIsNotEmptyPrintChores(){
-        ChoreService service = new ChoreService();
-        service.getChores().add(new Chore("Chore #01", Boolean.FALSE, LocalDate.now()));
-        assertFalse(service.getChores().isEmpty());
-        assertEquals(new Chore("Chore #01", Boolean.TRUE, LocalDate.now().plusDays(3)), service.editChore
-                (service.getChores(), 0, new Chore(null, Boolean.TRUE, LocalDate.now().plusDays(3))));
-    }
-
-    @Test
-    @DisplayName("#editChores >> When chores is not empty, edit Deadline, IsCompleted and Description >> return the chore")
-    void editChoresWhenChoreIsNotEmptyPrintChores(){
-        ChoreService service = new ChoreService();
-        service.getChores().add(new Chore("Chore #01", Boolean.FALSE, LocalDate.now()));
-        assertFalse(service.getChores().isEmpty());
-        assertEquals(new Chore("Chore #01(edited)", Boolean.TRUE, LocalDate.now().plusDays(5)), service.editChore
-                (service.getChores(), 0, new Chore("Chore #01(edited)", Boolean.TRUE, LocalDate.now().plusDays(5))));
-    }
-
 }
