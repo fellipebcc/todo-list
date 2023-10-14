@@ -155,6 +155,19 @@ public class ChoreService {
         }
     }
 
+    public void editChore(String oldDescription, LocalDate oldDeadline, String newDescription, LocalDate newDeadline) {
+        for (Chore chore : chores) {
+            if (chore.getDescription().equals(oldDescription) && chore.getDeadline().isEqual(oldDeadline)) {
+                chore.setDescription(newDescription);
+                chore.setDeadline(newDeadline);
+                return;
+            }
+        }
+        // Se a tarefa não for encontrada, lance uma exceção.
+        throw new ChoreNotFoundException("Chore not found: " + oldDescription + " (Deadline: " + oldDeadline + ")");
+    }
+
+
 
     private final Predicate<List<Chore>> isChoreListEmpty = choreList -> choreList.isEmpty();
 
