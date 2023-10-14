@@ -154,4 +154,20 @@ public class ChoreService {
                     "Status: " + service.getChores().get(i).getIsCompleted());
         }
     }
+    public Chore editChore(ChoreService service,int i,Chore chore){
+        if(!(service.getChores().size()==0)){
+            if(!(chore.getIsCompleted()==null)){
+                service.getChores().get(i).setIsCompleted(chore.getIsCompleted());
+            }
+            if(!(chore.getDescription()==null)){
+                service.getChores().get(i).setDescription(chore.getDescription());
+            }
+            if(!(chore.getDeadline()==null)){
+                service.getChores().get(i).setDeadline(chore.getDeadline());
+            }
+        }else{
+            throw new EmptyChoreListException("No Have Chores");
+        }
+        return service.getChores().get(i);
+    }
 }
