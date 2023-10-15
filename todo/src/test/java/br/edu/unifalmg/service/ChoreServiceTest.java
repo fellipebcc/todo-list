@@ -243,5 +243,37 @@ public class ChoreServiceTest {
                 () -> assertEquals(Boolean.FALSE, response.get(0).getIsCompleted())
         );
     }
+    @Test
+    @DisplayName("#editChore > When trying to edit a chore that does not exist > Throw an exception")
+    void editChoreWhenChoreDoesNotExistThrowAnException() {
+        ChoreService service = new ChoreService();
+        assertThrows(ChoreNotFoundException.class, () ->
+                service.editChore("Non-Existent Chore", LocalDate.now(), "New Description", LocalDate.now().plusDays(1))
+        );
+    }
+
+    @Test
+    @DisplayName("#editChore > When successfully editing a chore > Verify changes")
+    void editChoreSuccessfullyEditChore() {
+        ChoreService service = new ChoreService();
+        Chore chore = service.addChore("Chore #01", LocalDate.now());
+
+        service.editChore("Chore #01", LocalDate.now(), "Updated Chore", LocalDate.now().plusDays(1));
+
+        assertEquals("Updated Chore", chore.getDescription());
+        assertEquals(LocalDate.now().plusDays(1), chore.getDeadline());
+    }
+
+    @Test
+    @DisplayName("#editChore > When trying to edit a chore to an existing chore's description and deadline > Throw an exception")
+    void editChoreWhenEditingToExistingChoreThrowAnException() {
+        ChoreService service = new ChoreService();
+        service.addChore("Chore #01", LocalDate.now());
+        service.addChore("Chore #02", LocalDate.now().plusDays(2));
+
+        assertThrows(DuplicatedChoreException.class, () ->
+                service.editChore("Chore #01", LocalDate.now(), "Chore #02", LocalDate.now().plusDays(2))
+        );
+    }
 
 }
