@@ -3,7 +3,18 @@ package br.edu.unifalmg.service;
 import br.edu.unifalmg.domain.Chore;
 import br.edu.unifalmg.enumerator.ChoreFilter;
 import br.edu.unifalmg.exception.*;
-
+import com.fasterxml.jackson.core.ObjectCodec;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.lang.reflect.Type;
+import java.nio.channels.FileLockInterruptionException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -174,7 +185,12 @@ public class ChoreService {
             throw new InvalidDeadlineException("The deadline cannot be null or before the current date");
     }
 
-
+    public void loadChores() throws Exception{
+        File json = new File("todo/src/main/resources/chores.json");
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        chores = mapper.readValue(json, new TypeReference<ArrayList<Chore>>(){});
+    }
 
     @Override
     public String toString(){
