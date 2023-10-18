@@ -4,12 +4,25 @@ import br.edu.unifalmg.domain.Chore;
 import br.edu.unifalmg.enumerator.ChoreFilter;
 import br.edu.unifalmg.exception.*;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.File;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
+import java.io.File;
+import java.io.IOException;
+
+
 
 public class ChoreService {
 
@@ -23,11 +36,11 @@ public class ChoreService {
      * Method to add a new chore
      *
      * @param description The description of the chore
-     * @param deadline The deadline to fulfill the chore
+     * @param deadline    The deadline to fulfill the chore
      * @return Chore The new (and uncompleted) chore
      * @throws InvalidDescriptionException When the description is null or empty
-     * @throws InvalidDeadlineException When the deadline is null or empty
-     * @throws DuplicatedChoreException When the given chore already exists
+     * @throws InvalidDeadlineException    When the deadline is null or empty
+     * @throws DuplicatedChoreException    When the given chore already exists
      */
     public Chore addChore(String description, LocalDate deadline) {
         if (Objects.isNull(description) || description.isEmpty()) {
@@ -87,14 +100,14 @@ public class ChoreService {
      * Method to delete a given chore.
      *
      * @param description The description of the chore
-     * @param deadline The deadline of the chore
+     * @param deadline    The deadline of the chore
      */
     public void deleteChore(String description, LocalDate deadline) {
         if (isChoreListEmpty.test(this.chores)) {
             throw new EmptyChoreListException("Unable to remove a chore from an empty list");
         }
         boolean isChoreExist = this.chores.stream().anyMatch((chore -> chore.getDescription().equals(description)
-            && chore.getDeadline().isEqual(deadline)));
+                && chore.getDeadline().isEqual(deadline)));
         if (!isChoreExist) {
             throw new ChoreNotFoundException("The given chore does not exist.");
         }
@@ -104,11 +117,10 @@ public class ChoreService {
     }
 
     /**
-     *
      * Method to toggle a chore from completed to uncompleted and vice-versa.
      *
      * @param description The chore's description
-     * @param deadline The deadline to complete the chore
+     * @param deadline    The deadline to complete the chore
      * @throws ChoreNotFoundException When the chore is not found on the list
      */
     public void toggleChore(String description, LocalDate deadline) {
@@ -144,4 +156,23 @@ public class ChoreService {
 
     private final Predicate<List<Chore>> isChoreListEmpty = choreList -> choreList.isEmpty();
 
+    public void loadChoresFromJsonFile(String filePath) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            File file = new File(filePath);
+
+            if (!file.exists()) {
+                throw new IOException("Failed to load the JSON file: " + filePath);
+            }
+
+            this.chores = objectMapper.readValue(file, new TypeReference<>() {
+            });
+        } catch (IOException e) {
+            System.err.println("Error loading JSON file: " + e.getMessage());
+        }
+    }
+
+
 }
+
+
