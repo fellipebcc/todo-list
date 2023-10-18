@@ -3,18 +3,34 @@ package br.edu.unifalmg.service;
 import br.edu.unifalmg.domain.Chore;
 import br.edu.unifalmg.enumerator.ChoreFilter;
 import br.edu.unifalmg.exception.*;
+import br.edu.unifalmg.repository.ChoreRepository;
 import br.edu.unifalmg.repository.impl.FileChoreRepository;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.platform.commons.util.ReflectionUtils;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ChoreServiceTest {
+
+    @InjectMocks
+    public ChoreService service;
+
+    @Mock
+    private ChoreRepository repository;
+
+    //Habiltiar o Mockito
+    @BeforeEach
+    public void setup() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Test
     @DisplayName("#addChore > When the description is invalid > Throw an exception")
@@ -246,13 +262,29 @@ public class ChoreServiceTest {
     }
 
 
-    @Test
+    /*@Test
     @DisplayName("#laodChores > When the chores are loaded > Update the chore list")
     void loadChoresWhenTheChoresAreLoadedUpdateTheChoreList() {
         ChoreService service = new ChoreService(new FileChoreRepository());
         service.loadChores();
         int size = service.getChores().size();
         assertEquals(3, size);
+    }*/
+    @Test
+    @DisplayName("#laodChores > When the chores are loaded > Update the chore list")
+    void loadChoresWhenTheChoresAreLoadedUpdateTheChoreList() {
+        // repository.load() -> List<Chores>
+        Mockito.when(repository.load()).thenReturn(new ArrayList<>() {{
+            add(new Chore("Chore #01", Boolean.FALSE, LocalDate.now()));
+            add(new Chore("Chore #02", Boolean.TRUE, LocalDate.now().minusDays(3)));
+        }
+
+        });
+
+        service.loadChores();
+        int size = service.getChores().size();
+        assertEquals(2, size);
     }
+
 
 }
