@@ -3,9 +3,16 @@ package br.edu.unifalmg.service;
 import br.edu.unifalmg.domain.Chore;
 import br.edu.unifalmg.enumerator.ChoreFilter;
 import br.edu.unifalmg.exception.*;
+import br.edu.unifalmg.repository.ChoreRepository;
+import br.edu.unifalmg.repository.impl.FileChoreRepository;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -15,10 +22,24 @@ public class ChoreService {
 
     private List<Chore> chores;
 
-    public ChoreService() {
+
+    private ObjectMapper mapper;
+
+    private ChoreRepository repository;
+
+    public ChoreService(ChoreRepository repository) {
         chores = new ArrayList<>();
+        mapper = new ObjectMapper().findAndRegisterModules();
+        // VV não é uma boa prática, cria-se uma dependência na classe, caso usarmos ChoreService em outra aplicação teremos que exportar FileChoreRepository e repository juntos
+        //repository = new FileChoreRepository();
+        this.repository = repository;
+
     }
 
+    public ChoreService() {
+        chores = new ArrayList<>();
+        mapper = new ObjectMapper().findAndRegisterModules();
+    }
     /**
      * Method to add a new chore
      *
@@ -141,6 +162,13 @@ public class ChoreService {
                 return this.chores;
         }
     }
+
+
+    public void loadChores() {
+        this.chores = repository.load();
+    }
+
+
 
     private final Predicate<List<Chore>> isChoreListEmpty = choreList -> choreList.isEmpty();
 
