@@ -8,4 +8,6 @@ public interface ChoreRepository {
 
     List<Chore> load();
 
+    boolean save(List<Chore> chores);
+
 }
