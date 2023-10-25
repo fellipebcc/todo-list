@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="br.edu.unifalmg.repository.FileChoreRepositoryTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-10-20T18:29:16" hostname="suporte-OptiPlex-3050" time="2.087">
+  <properties/>
+  <testcase name="load &gt; When the file is not found (or path is invalid) &gt; then return an empty list" classname="br.edu.unifalmg.repository.FileChoreRepositoryTest" time="2.048"/>
+  <testcase name="load &gt; When the file is valid &gt; then return a list of chores" classname="br.edu.unifalmg.repository.FileChoreRepositoryTest" time="0.025"/>
+  <testcase name="load &gt; When the file is empty &gt; then return an empty list" classname="br.edu.unifalmg.repository.FileChoreRepositoryTest" time="0.007"/>
+  <system-out><![CDATA[ERROR: Unable to open file.
+ERROR: Unable to convert file into chores
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

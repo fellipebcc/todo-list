@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="br.edu.unifalmg.service.ChoreServiceTest" tests="21" skipped="0" failures="0" errors="0" timestamp="2023-10-20T18:29:18" hostname="suporte-OptiPlex-3050" time="0.229">
+  <properties/>
+  <testcase name="#deleteChore &gt; When the list is not empty &gt; When the chore exists &gt; Delete the chore" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.114"/>
+  <testcase name="#filterChores &gt; When the filter is COMPLETED &gt; When the list is empty &gt; Return an empty list" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.005"/>
+  <testcase name="#toggleChore &gt; When the deadline is invalid &gt; When the status is uncompleted &gt; Toggle the chore" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.006"/>
+  <testcase name="#loadChores &gt; When no chores are loaded &gt; Update the chore list" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.006"/>
+  <testcase name="#addChore &gt; When adding a chore &gt; When the chore already exists &gt; Throw an exception" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.004"/>
+  <testcase name="#toggleChore &gt; When the deadline is invalid &gt; When status is completed &gt; Throw an exception" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.003"/>
+  <testcase name="#toggleChore &gt; When the chore does not exist &gt; Throw an exception" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.003"/>
+  <testcase name="#toggleChore &gt; When the deadline is valid &gt; Toggle the chore" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.004"/>
+  <testcase name="#addChore &gt; When the deadline is invalid &gt; Throw an exception" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.005"/>
+  <testcase name="#addChore &gt; When the description is invalid &gt; Throw an exception" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.006"/>
+  <testcase name="#filterChores &gt; When the filter is ALL &gt; When the list is empty &gt; Return all chores" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.004"/>
+  <testcase name="#deleteChore &gt; When the list is not empty &gt; When the chore does not exist &gt; Throw an exception" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.004"/>
+  <testcase name="#addChore &gt; When the chore's list has at least one element &gt; When adding a new chore &gt; Add the chore" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.006"/>
+  <testcase name="#loadChores &gt; When the chores are loaded &gt; Update the chore list" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.007"/>
+  <testcase name="#filterChores &gt; When the filter is ALL &gt; When the list is not empty &gt; Return all chores" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.004"/>
+  <testcase name="#filterChores &gt; When the filter is UNCOMPLETED &gt; When the list is not empty &gt; Return the filtered chores" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.005"/>
+  <testcase name="#addChore &gt; When the chore's list is empty &gt; When adding a new chore &gt; Add the chore" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.005"/>
+  <testcase name="#filterChores &gt; When the filter is UNCOMPLETED &gt; When the list is empty &gt; Return an empty list" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.003"/>
+  <testcase name="#toggleChore &gt; When the deadline is valid &gt; When toggle the chore twice &gt; Toggle chore" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.003"/>
+  <testcase name="#filterChores &gt; When the filter is COMPLETED &gt; When the list is not empty &gt; Return the filtered chores" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.004"/>
+  <testcase name="#deleteChore &gt; When the list is empty &gt; Throw an exception" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
