@@ -22,9 +22,12 @@ public class FileChoreRepository implements ChoreRepository {
     @Override
     public List<Chore> load() {
         try {
-            return new ArrayList<>(Arrays.asList(
-                    mapper.readValue(new File("chores.json"), Chore[].class)
-            ));
+            // Arrays.asList → Gera uma lista IMUTAVEL
+            return new ArrayList<>(
+                    Arrays.asList(
+                            mapper.readValue(new File("chores.json"), Chore[].class)
+                    )
+            );
 
             // Using TypeReference
 //            return mapper.readValue(new File("chores.json"),
