@@ -17,8 +17,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FileChoreRepositoryTest {
 
@@ -29,12 +33,13 @@ public class FileChoreRepositoryTest {
     private ObjectMapper mapper;
 
     @BeforeEach
-    public void setUp() {
+    public void setup() {
         MockitoAnnotations.openMocks(this);
     }
+
     @Test
-    @DisplayName("load > When the file is empty > then return an empty list")
-    void loadWhenTheFileIsEmptyThenReturnAnEmptyList() throws IOException {
+    @DisplayName("#load > When the file is found > When the content is empty > Return empty list")
+    void loadWhenTheFileIsFoundWhenTheContentIsEmptyReturnEmptyList() throws IOException {
         Mockito.when(
                 mapper.readValue(new File("chores.json"), Chore[].class)
         ).thenThrow(MismatchedInputException.class);
@@ -44,8 +49,8 @@ public class FileChoreRepositoryTest {
     }
 
     @Test
-    @DisplayName("load > When the file is not found (or path is invalid) > then return an empty list")
-    void loadWhenTheFileIsNotFoundThenReturnAnEmptyList() throws IOException {
+    @DisplayName("#load > When the file is not found (or path is invalid) > Return an empty list")
+    void loadWhenTheFileIsNotFoundOrPathIsInvalidReturnAnEmptyList() throws IOException {
         Mockito.when(
                 mapper.readValue(new File("chores.json"), Chore[].class)
         ).thenThrow(FileNotFoundException.class);
@@ -53,20 +58,24 @@ public class FileChoreRepositoryTest {
         List<Chore> response = repository.load();
         Assertions.assertTrue(response.isEmpty());
     }
+
     @Test
-    @DisplayName("load > When the file is valid > then return a list of chores")
-    void loadWhenTheFileIsValidThenReturnAListOfChores() throws IOException {
+    @DisplayName("#load > When the file is loaded > Return a chores' list")
+    void loadWhenTheFileIsLoadedReturnAChoresList() throws IOException {
         Mockito.when(
                 mapper.readValue(new File("chores.json"), Chore[].class)
-        ).thenReturn(new Chore[]{
+        ).thenReturn(new Chore[] {
                 new Chore("First Chore", Boolean.FALSE, LocalDate.now()),
-                new Chore("Second Chore", Boolean.TRUE, LocalDate.now().minusDays(1))
+                new Chore("Second Chore", TRUE, LocalDate.now().minusDays(5))
         });
+
         List<Chore> chores = repository.load();
-        Assertions.assertAll(
-                () -> Assertions.assertEquals(2, chores.size()),
-                () -> Assertions.assertEquals("First Chore", chores.get(0).getDescription()),
-                () -> Assertions.assertEquals(LocalDate.now(), chores.get(0).getDeadline())
+        assertAll(
+                () -> assertEquals(2, chores.size()),
+                () -> assertEquals("First Chore", chores.get(0).getDescription()),
+                () -> assertEquals(LocalDate.now().minusDays(5), chores.get(1).getDeadline())
         );
     }
+
+
 }

@@ -7,6 +7,7 @@ import java.util.List;
 public interface ChoreRepository {
 
     List<Chore> load();
+
     boolean save(List<Chore> chores);
 
 }
