@@ -3,6 +3,7 @@ package br.edu.unifalmg.service;
 import br.edu.unifalmg.domain.Chore;
 import br.edu.unifalmg.enumerator.ChoreFilter;
 import br.edu.unifalmg.exception.*;
+import br.edu.unifalmg.repository.ChoreRepository;
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,6 +27,16 @@ import java.util.stream.Collectors;
 public class ChoreService {
 
     private List<Chore> chores;
+
+    private ObjectMapper mapper;
+
+    private ChoreRepository repository;
+
+    public ChoreService(ChoreRepository repository) {
+        chores = new ArrayList<>();
+        mapper = new ObjectMapper().findAndRegisterModules();
+        this.repository = repository;
+    }
 
     public ChoreService() {
         chores = new ArrayList<>();
@@ -185,12 +196,25 @@ public class ChoreService {
             throw new InvalidDeadlineException("The deadline cannot be null or before the current date");
     }
 
-    public void loadChores() throws Exception{
-        File json = new File("todo/src/main/resources/chores.json");
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        chores = mapper.readValue(json, new TypeReference<ArrayList<Chore>>(){});
+
+    /**
+     * Load the chores from the repository.
+     * The repository can return NULL if no chores are found.
+     */
+    public void loadChores() {
+        this.chores = repository.load();
     }
+
+    /**
+     * Save the chores into the file
+     *
+     * @return TRUE, if the saved was completed and <br/>
+     *         FALSE, when the save fails
+     */
+    public Boolean saveChores() {
+        return repository.save(this.chores);
+    }
+
 
     @Override
     public String toString(){
