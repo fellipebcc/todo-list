@@ -3,8 +3,13 @@ package br.edu.unifalmg.service;
 import br.edu.unifalmg.domain.Chore;
 import br.edu.unifalmg.enumerator.ChoreFilter;
 import br.edu.unifalmg.exception.*;
+import br.edu.unifalmg.repository.ChoreRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,6 +17,17 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ChoreServiceTest {
+
+    @InjectMocks
+    private ChoreService service;
+
+    @Mock
+    private ChoreRepository repository;
+
+    @BeforeEach
+    public void setup() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Test
     @DisplayName("#addChore > When the description is invalid > Throw an exception")
