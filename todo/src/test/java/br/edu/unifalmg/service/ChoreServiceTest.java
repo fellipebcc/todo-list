@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDate;
@@ -386,5 +387,35 @@ public class ChoreServiceTest {
                 () -> assertEquals(newDate, service.getChores().get(0).getDeadline())
         );
     }
+
+    @Test
+    @DisplayName("#save > When the list is empty > return true")
+    void saveWhenTheListIsEmptyReturnTrue(){
+        ChoreService service = new ChoreService(repository);
+        List<Chore> chores = service.getChores();
+        Mockito.when(this.repository.save(chores)).thenReturn(true);
+        assertTrue(service::saveChores);
+    }
+
+    @Test
+    @DisplayName("#save > When the list has one chore > return true")
+    void saveWhenTheListHasOneChoreReturnTrue(){
+        ChoreService service = new ChoreService(repository);
+        service.getChores().add(Chore.builder().description("test save").deadline(LocalDate.now().plusDays(3)).build());
+        List<Chore> chores = service.getChores();
+        Mockito.when(this.repository.save(chores)).thenReturn(true);
+        assertTrue(service::saveChores);
+    }
+
+    @Test
+    @DisplayName("#save > When the repository fails > return false")
+    void saveWhenTheRepositoryFailsReturnFalse(){
+        ChoreService service = new ChoreService(repository);
+        List<Chore> chores = service.getChores();
+        Mockito.when(this.repository.save(chores)).thenReturn(false);
+        assertFalse(service::saveChores);
+    }
+
+
 
 }
