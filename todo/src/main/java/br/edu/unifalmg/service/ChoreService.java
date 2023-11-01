@@ -3,6 +3,8 @@ package br.edu.unifalmg.service;
 import br.edu.unifalmg.domain.Chore;
 import br.edu.unifalmg.enumerator.ChoreFilter;
 import br.edu.unifalmg.exception.*;
+import br.edu.unifalmg.repository.ChoreRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -14,6 +16,16 @@ import java.util.stream.Collectors;
 public class ChoreService {
 
     private List<Chore> chores;
+
+    private ObjectMapper mapper;
+
+    private ChoreRepository repository;
+
+    public ChoreService(ChoreRepository repository) {
+        chores = new ArrayList<>();
+        mapper = new ObjectMapper().findAndRegisterModules();
+        this.repository = repository;
+    }
 
     public ChoreService() {
         chores = new ArrayList<>();
@@ -69,7 +81,7 @@ public class ChoreService {
 //         chore.setDeadline(deadline);
 //         chore.setIsCompleted(Boolean.FALSE);
 
-
+        repository.save(chore);
         chores.add(chore);
         return chore;
     }
@@ -130,6 +142,12 @@ public class ChoreService {
         }).collect(Collectors.toList());
     }
 
+    /**
+     * Filter the chores by its status
+     *
+     * @param filter COMPLETED, UNCOMPLETED or ALL
+     * @return A list with the filtered chores
+     */
     public List<Chore> filterChores(ChoreFilter filter) {
         switch (filter) {
             case COMPLETED:
@@ -140,6 +158,24 @@ public class ChoreService {
             default:
                 return this.chores;
         }
+    }
+
+    /**
+     * Load the chores from the repository.
+     * The repository can return NULL if no chores are found.
+     */
+    public void loadChores() {
+        this.chores = repository.load();
+    }
+
+    /**
+     * Save the chores into the file
+     *
+     * @return TRUE, if the saved was completed and <br/>
+     *         FALSE, when the save fails
+     */
+    public Boolean saveChores() {
+        return repository.saveAll(this.chores);
     }
 
     private final Predicate<List<Chore>> isChoreListEmpty = choreList -> choreList.isEmpty();
