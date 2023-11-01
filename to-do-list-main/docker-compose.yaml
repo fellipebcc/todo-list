@@ -1,0 +1,18 @@
+version: '3.3'
+services:
+  db:
+    image: 'mysql:latest'
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db2022108011'
+      MYSQL_USER: 'user2022108011'
+      MYSQL_PASSWORD: '2022108011'
+      MYSQL_ROOT_PASSWORD: '2022108011'
+    ports:
+      - '3307:3306'
+    expose:
+      - '3306'
+    volumes:
+      - mydb:/var/lib/mysql
+volumes:
+  mydb:

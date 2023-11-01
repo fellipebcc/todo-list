@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="br.edu.unifalmg.service.ChoreServiceTest" tests="23" skipped="0" failures="0" errors="0" timestamp="2023-11-01T00:19:30" hostname="DESKTOP-B1CE0U7" time="1.882">
+  <properties/>
+  <testcase name="#saveChores &gt; When the save is completed &gt; Return True" classname="br.edu.unifalmg.service.ChoreServiceTest" time="1.496"/>
+  <testcase name="#deleteChore &gt; When the list is not empty &gt; When the chore exists &gt; Delete the chore" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.022"/>
+  <testcase name="#filterChores &gt; When the filter is COMPLETED &gt; When the list is empty &gt; Return an empty list" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.045"/>
+  <testcase name="#toggleChore &gt; When the deadline is invalid &gt; When the status is uncompleted &gt; Toggle the chore" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.026"/>
+  <testcase name="#loadChores &gt; When no chores are loaded &gt; Update the chore list" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.011"/>
+  <testcase name="#addChore &gt; When adding a chore &gt; When the chore already exists &gt; Throw an exception" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.022"/>
+  <testcase name="#toggleChore &gt; When the deadline is invalid &gt; When status is completed &gt; Throw an exception" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.016"/>
+  <testcase name="#toggleChore &gt; When the chore does not exist &gt; Throw an exception" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.009"/>
+  <testcase name="#toggleChore &gt; When the deadline is valid &gt; Toggle the chore" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.01"/>
+  <testcase name="#saveChores &gt; When the save fails &gt; Return False" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.013"/>
+  <testcase name="#addChore &gt; When the deadline is invalid &gt; Throw an exception" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.013"/>
+  <testcase name="#addChore &gt; When the description is invalid &gt; Throw an exception" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.017"/>
+  <testcase name="#filterChores &gt; When the filter is ALL &gt; When the list is empty &gt; Return all chores" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.007"/>
+  <testcase name="#deleteChore &gt; When the list is not empty &gt; When the chore does not exist &gt; Throw an exception" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.01"/>
+  <testcase name="#addChore &gt; When the chore's list has at least one element &gt; When adding a new chore &gt; Add the chore" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.012"/>
+  <testcase name="#loadChores &gt; When the chores are loaded &gt; Update the chore list" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.022"/>
+  <testcase name="#filterChores &gt; When the filter is ALL &gt; When the list is not empty &gt; Return all chores" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.009"/>
+  <testcase name="#filterChores &gt; When the filter is UNCOMPLETED &gt; When the list is not empty &gt; Return the filtered chores" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.006"/>
+  <testcase name="#addChore &gt; When the chore's list is empty &gt; When adding a new chore &gt; Add the chore" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.006"/>
+  <testcase name="#filterChores &gt; When the filter is UNCOMPLETED &gt; When the list is empty &gt; Return an empty list" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.006"/>
+  <testcase name="#toggleChore &gt; When the deadline is valid &gt; When toggle the chore twice &gt; Toggle chore" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.007"/>
+  <testcase name="#filterChores &gt; When the filter is COMPLETED &gt; When the list is not empty &gt; Return the filtered chores" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.006"/>
+  <testcase name="#deleteChore &gt; When the list is empty &gt; Throw an exception" classname="br.edu.unifalmg.service.ChoreServiceTest" time="0.004"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
