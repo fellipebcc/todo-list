@@ -66,7 +66,9 @@ public class ChoreServiceTest {
     @Test
     @DisplayName("#addChore > When adding a chore > When the chore already exists > Throw an exception")
     void addChoreWhenAddingAChoreWhenTheChoreAlreadyExistsThrowAnException() {
-        ChoreService service = new ChoreService();
+        Mockito.when(
+                repository.save(new Chore("Description", Boolean.FALSE, LocalDate.now()))
+        ).thenReturn(Boolean.TRUE);
         service.addChore("Description", LocalDate.now());
         assertThrows(DuplicatedChoreException.class,
                 () -> service.addChore("Description", LocalDate.now()));
@@ -87,7 +89,12 @@ public class ChoreServiceTest {
     @Test
     @DisplayName("#addChore > When the chore's list has at least one element > When adding a new chore > Add the chore")
     void addChoreWhenTheChoresListHasAtLeastOneElementWhenAddingANewChoreAddTheChore() {
-        ChoreService service = new ChoreService();
+        Mockito.when(
+                repository.save(new Chore("Chore #01", Boolean.FALSE, LocalDate.now()))
+        ).thenReturn(Boolean.TRUE);
+        Mockito.when(
+                repository.save(new Chore("Chore #02", Boolean.FALSE, LocalDate.now().plusDays(2)))
+        ).thenReturn(Boolean.TRUE);
         service.addChore("Chore #01", LocalDate.now());
         service.addChore("Chore #02", LocalDate.now().plusDays(2));
         assertAll(

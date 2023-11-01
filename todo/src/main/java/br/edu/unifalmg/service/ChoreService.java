@@ -4,7 +4,6 @@ import br.edu.unifalmg.domain.Chore;
 import br.edu.unifalmg.enumerator.ChoreFilter;
 import br.edu.unifalmg.exception.*;
 import br.edu.unifalmg.repository.ChoreRepository;
-import br.edu.unifalmg.repository.impl.FileChoreRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.LocalDate;
@@ -82,7 +81,7 @@ public class ChoreService {
 //         chore.setDeadline(deadline);
 //         chore.setIsCompleted(Boolean.FALSE);
 
-
+        repository.save(chore);
         chores.add(chore);
         return chore;
     }
@@ -176,7 +175,7 @@ public class ChoreService {
      *         FALSE, when the save fails
      */
     public Boolean saveChores() {
-        return repository.save(this.chores);
+        return repository.saveAll(this.chores);
     }
 
     private final Predicate<List<Chore>> isChoreListEmpty = choreList -> choreList.isEmpty();

@@ -16,8 +16,8 @@ public class TodoApplication {
         ChoreRepository repository = new MySQLChoreRepository();
         ChoreService service = new ChoreService(repository);
         service.loadChores();
-//        service.addChore("Testing write on file feature", LocalDate.now());
-//        service.addChore("Chore #01", LocalDate.now().plusDays(5));
+//        service.addChore("Testing write on database feature", LocalDate.now());
+        service.addChore("Feriado", LocalDate.now().plusDays(1));
 //        service.addChore("Chore #02", LocalDate.now().plusDays(8));
 //        service.toggleChore("Chore #03", LocalDate.now().plusDays(1));
         System.out.println("Tamanho da lista de chores: " + service.getChores().size());
