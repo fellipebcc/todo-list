@@ -2,6 +2,7 @@ package br.edu.unifalmg.repository;
 
 import br.edu.unifalmg.domain.Chore;
 import br.edu.unifalmg.repository.impl.FileChoreRepository;
+import br.edu.unifalmg.service.ChoreService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import org.junit.jupiter.api.Assertions;
@@ -17,12 +18,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class FileChoreRepositoryTest {
 
@@ -45,7 +46,7 @@ public class FileChoreRepositoryTest {
         ).thenThrow(MismatchedInputException.class);
 
         List<Chore> response = repository.load();
-        Assertions.assertTrue(response.isEmpty());
+        assertTrue(response.isEmpty());
     }
 
     @Test
@@ -56,7 +57,7 @@ public class FileChoreRepositoryTest {
         ).thenThrow(FileNotFoundException.class);
 
         List<Chore> response = repository.load();
-        Assertions.assertTrue(response.isEmpty());
+        assertTrue(response.isEmpty());
     }
 
     @Test
@@ -77,5 +78,75 @@ public class FileChoreRepositoryTest {
         );
     }
 
+    @Test
+    @DisplayName("#save > When saving a valid file > Should return true")
+    void saveWhenSavingAValidFileShouldReturnTrue() throws IOException {
+        // Create a list of chores
+        List<Chore> chores = new ArrayList<>();
+        chores.add(new Chore("Chore 1", true, LocalDate.now()));
+        chores.add(new Chore("Chore 2", false, LocalDate.now().plusDays(2)));
 
+        // Mock the ObjectMapper's writeValue method to simulate a successful save
+        Mockito.doNothing().when(mapper).writeValue(new File("chores.json"), chores);
+
+        // Call the save method and assert that it returns true
+        boolean result = repository.save(chores);
+        assertTrue(result);
+    }
+
+    @Test
+    @DisplayName("#save > When saving an invalid file > Should return false")
+    void saveWhenSavingAnInvalidFileShouldReturnFalse() throws IOException {
+        // Cria uma lista de chores para ser salva
+        List<Chore> chores = new ArrayList<>();
+        chores.add(new Chore("Chore 1", true, LocalDate.now()));
+        chores.add(new Chore("Chore 2", false, LocalDate.now().plusDays(2)));
+
+        // Mock o método writeValue do ObjectMapper para simular um save mal sucedido
+        Mockito.doThrow(IOException.class).when(mapper).writeValue(new File("chores.json"), chores);
+
+        // Chama o método save e verifica se ele retorna false
+        boolean result = repository.save(chores);
+        assertFalse(result);
+    }
+
+    @Test
+    @DisplayName("#save > When saving a null file > Should return false")
+    void saveWhenSavingANullFileShouldReturnFalse() throws IOException {
+        // Mock o método writeValue do ObjectMapper para simular um save mal sucedido
+        Mockito.doThrow(IOException.class).when(mapper).writeValue(new File("chores.json"), null);
+
+        // Chama o método save e verifica se ele retorna false
+        boolean result = repository.save(null);
+        assertFalse(result);
+    }
+
+    @Test
+    @DisplayName("#save > When saving an empty file > Should return false")
+    void saveWhenSavingAnEmptyFileShouldReturnFalse() throws IOException {
+        // Cria uma lista de chores vazia para ser salva
+        List<Chore> chores = new ArrayList<>();
+
+        // Mock o método writeValue do ObjectMapper para simular um save mal sucedido
+        Mockito.doThrow(IOException.class).when(mapper).writeValue(new File("chores.json"), chores);
+
+        // Chama o método save e verifica se ele retorna false
+        boolean result = repository.save(chores);
+        assertFalse(result);
+    }
+
+    @Test
+    @DisplayName("#save > When saving a file with a null chore > Should return false")
+    void saveWhenSavingAFileWithANullChoreShouldReturnFalse() throws IOException {
+        // Cria uma lista de chores para ser salva
+        List<Chore> chores = new ArrayList<>();
+        chores.add(null);
+
+        // Mock o método writeValue do ObjectMapper para simular um save mal sucedido
+        Mockito.doThrow(IOException.class).when(mapper).writeValue(new File("chores.json"), chores);
+
+        // Chama o método save e verifica se ele retorna false
+        boolean result = repository.save(chores);
+        assertFalse(result);
+    }
 }
