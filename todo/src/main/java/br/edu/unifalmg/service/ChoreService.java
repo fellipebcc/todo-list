@@ -163,6 +163,9 @@ public class ChoreService {
         this.chores = repository.load();
     }
 
+    public Boolean saveChores() {
+        return repository.save(this.chores);
+    }
 
     private final Predicate<List<Chore>> isChoreListEmpty = choreList -> choreList.isEmpty();
 
