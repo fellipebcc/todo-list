@@ -7,12 +7,13 @@ import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 public class FileChoreRepository implements ChoreRepository {
     private ObjectMapper mapper;
-    public FileChoreRepository() {
+    public FileChoreRepository(Path testFilePath) {
         mapper = new ObjectMapper().findAndRegisterModules();
     }
     @Override
