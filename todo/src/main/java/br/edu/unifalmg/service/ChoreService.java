@@ -4,6 +4,7 @@ import br.edu.unifalmg.domain.Chore;
 import br.edu.unifalmg.enumerator.ChoreFilter;
 import br.edu.unifalmg.exception.*;
 import br.edu.unifalmg.repository.ChoreRepository;
+<<<<<<< HEAD
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,6 +17,10 @@ import java.lang.reflect.Type;
 import java.nio.channels.FileLockInterruptionException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+=======
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+>>>>>>> 8a145508ae9bb84231ccde42183ffa2aff2410b9
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +92,7 @@ public class ChoreService {
 //         chore.setDeadline(deadline);
 //         chore.setIsCompleted(Boolean.FALSE);
 
-
+        repository.save(chore);
         chores.add(chore);
         return chore;
     }
@@ -148,6 +153,12 @@ public class ChoreService {
         }).collect(Collectors.toList());
     }
 
+    /**
+     * Filter the chores by its status
+     *
+     * @param filter COMPLETED, UNCOMPLETED or ALL
+     * @return A list with the filtered chores
+     */
     public List<Chore> filterChores(ChoreFilter filter) {
         switch (filter) {
             case COMPLETED:
@@ -160,6 +171,7 @@ public class ChoreService {
         }
     }
 
+<<<<<<< HEAD
     public String displayChores(){
         if(isChoreListEmpty.test(chores)){
             System.out.println("No chores to display");
@@ -197,6 +209,8 @@ public class ChoreService {
     }
 
 
+=======
+>>>>>>> 8a145508ae9bb84231ccde42183ffa2aff2410b9
     /**
      * Load the chores from the repository.
      * The repository can return NULL if no chores are found.
@@ -212,6 +226,7 @@ public class ChoreService {
      *         FALSE, when the save fails
      */
     public Boolean saveChores() {
+<<<<<<< HEAD
         return repository.save(this.chores);
     }
 
@@ -222,5 +237,11 @@ public class ChoreService {
         this.chores.forEach(chore-> choresInformation.append(chore.toString()).append("\n"));
         return choresInformation.toString();
     }
+=======
+        return repository.saveAll(this.chores);
+    }
+
+    private final Predicate<List<Chore>> isChoreListEmpty = choreList -> choreList.isEmpty();
+>>>>>>> 8a145508ae9bb84231ccde42183ffa2aff2410b9
 
 }

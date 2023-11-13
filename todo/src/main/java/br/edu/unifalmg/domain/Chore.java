@@ -16,7 +16,12 @@ import java.util.Objects;
 @AllArgsConstructor
 public class Chore {
 
+<<<<<<< HEAD
     @JsonProperty("description")
+=======
+    private Long id;
+
+>>>>>>> 8a145508ae9bb84231ccde42183ffa2aff2410b9
     private String description;
 
     @JsonProperty("isCompleted")
@@ -26,6 +31,7 @@ public class Chore {
     @JsonFormat(shape = JsonFormat.Shape.ARRAY)
     private LocalDate deadline;
 
+<<<<<<< HEAD
     @Override
     public String toString() {
         String status = isCompleted ? "Completa" : "Incompleta";
@@ -33,4 +39,11 @@ public class Chore {
     }
 
 
+=======
+    public Chore(String description, Boolean isCompleted, LocalDate deadline) {
+        this.description = description;
+        this.isCompleted = isCompleted;
+        this.deadline = deadline;
+    }
+>>>>>>> 8a145508ae9bb84231ccde42183ffa2aff2410b9
 }

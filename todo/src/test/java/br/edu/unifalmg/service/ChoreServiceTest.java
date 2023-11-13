@@ -13,6 +13,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -65,7 +66,9 @@ public class ChoreServiceTest {
     @Test
     @DisplayName("#addChore > When adding a chore > When the chore already exists > Throw an exception")
     void addChoreWhenAddingAChoreWhenTheChoreAlreadyExistsThrowAnException() {
-        ChoreService service = new ChoreService();
+        Mockito.when(
+                repository.save(new Chore("Description", Boolean.FALSE, LocalDate.now()))
+        ).thenReturn(Boolean.TRUE);
         service.addChore("Description", LocalDate.now());
         assertThrows(DuplicatedChoreException.class,
                 () -> service.addChore("Description", LocalDate.now()));
@@ -86,7 +89,12 @@ public class ChoreServiceTest {
     @Test
     @DisplayName("#addChore > When the chore's list has at least one element > When adding a new chore > Add the chore")
     void addChoreWhenTheChoresListHasAtLeastOneElementWhenAddingANewChoreAddTheChore() {
-        ChoreService service = new ChoreService();
+        Mockito.when(
+                repository.save(new Chore("Chore #01", Boolean.FALSE, LocalDate.now()))
+        ).thenReturn(Boolean.TRUE);
+        Mockito.when(
+                repository.save(new Chore("Chore #02", Boolean.FALSE, LocalDate.now().plusDays(2)))
+        ).thenReturn(Boolean.TRUE);
         service.addChore("Chore #01", LocalDate.now());
         service.addChore("Chore #02", LocalDate.now().plusDays(2));
         assertAll(
@@ -260,6 +268,7 @@ public class ChoreServiceTest {
     }
 
     @Test
+<<<<<<< HEAD
     @DisplayName("#printChores > When the list is  empty > print: No chores to display")
     void printChoresWhenTheListIsEmptyPrintNoChoresToDisplay() {
         ChoreService service = new ChoreService();
@@ -385,10 +394,31 @@ public class ChoreServiceTest {
         assertAll(
                 ()-> assertEquals(newDescription, service.getChores().get(0).getDescription()),
                 () -> assertEquals(newDate, service.getChores().get(0).getDeadline())
+=======
+    @DisplayName("#loadChores > When the chores are loaded > Update the chore list")
+    void loadChoresWhenTheChoresAreLoadedUpdateTheChoreList() {
+        Mockito.when(repository.load()).thenReturn(new ArrayList<>() {{
+            add(new Chore("Chore #01", Boolean.FALSE, LocalDate.now()));
+            add(new Chore("Chore #02", Boolean.TRUE, LocalDate.now().minusDays(2)));
+        }});
+        service.loadChores();
+//        int size = service.getChores().size();
+//        assertEquals(2, size);
+        List<Chore> loadedChores = service.getChores();
+        assertAll(
+                () -> assertEquals(2, loadedChores.size()),
+                () -> assertEquals("Chore #01", loadedChores.get(0).getDescription()),
+                () -> assertEquals(Boolean.FALSE, loadedChores.get(0).getIsCompleted()),
+                () -> assertEquals(LocalDate.now(), loadedChores.get(0).getDeadline()),
+                () -> assertEquals("Chore #02", loadedChores.get(1).getDescription()),
+                () -> assertEquals(Boolean.TRUE, loadedChores.get(1).getIsCompleted()),
+                () -> assertEquals(LocalDate.now().minusDays(2), loadedChores.get(1).getDeadline())
+>>>>>>> 8a145508ae9bb84231ccde42183ffa2aff2410b9
         );
     }
 
     @Test
+<<<<<<< HEAD
     @DisplayName("#save > When the list is empty > return true")
     void saveWhenTheListIsEmptyReturnTrue(){
         ChoreService service = new ChoreService(repository);
@@ -418,4 +448,14 @@ public class ChoreServiceTest {
 
 
 
+=======
+    @DisplayName("#loadChores > When no chores are loaded > Update the chore list")
+    void loadChoresWhenNoChoresAreLoadedUpdateTheChoreList() {
+        Mockito.when(repository.load()).thenReturn(new ArrayList<>());
+        service.loadChores();
+        List<Chore> loadChores = service.getChores();
+        assertTrue(loadChores.isEmpty());
+    }
+
+>>>>>>> 8a145508ae9bb84231ccde42183ffa2aff2410b9
 }
