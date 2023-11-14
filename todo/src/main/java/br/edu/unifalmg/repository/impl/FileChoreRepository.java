@@ -57,9 +57,4 @@ public class FileChoreRepository implements ChoreRepository {
         throw new RuntimeException("Operation not supported yet.");
     }
 
-    @Override
-    public boolean update(Chore chore) {
-        throw new RuntimeException("Operation not supported yet.");
-    }
-
 }

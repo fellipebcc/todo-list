@@ -298,38 +298,4 @@ public class ChoreServiceTest {
         assertTrue(loadChores.isEmpty());
     }
 
-    @Test
-    @DisplayName("#updateChore > When description is invalid > throw an exception")
-    void updateChoreWhenDescriptionIsInvalidThrowAnException() {
-        service.getChores().add(new Chore("Chore #01", Boolean.FALSE, LocalDate.now()));
-        service.getChores().add(new Chore("Chore #02", Boolean.TRUE, LocalDate.now()));
-        Chore chore = service.getChores().get(0);
-        chore.setDescription("");
-        Mockito.when(repository.update(chore)).thenThrow(InvalidDescriptionException.class);
-        assertThrows(InvalidDescriptionException.class,()->service.updateChore(chore));
-    }
-
-    @Test
-    @DisplayName("#updateChore > When deadline is invalid > throw an exception")
-    void updateChoreWhenDeadlineIsInvalidThrowAnException() {
-        service.getChores().add(new Chore("Chore #01", Boolean.FALSE, LocalDate.now()));
-        service.getChores().add(new Chore("Chore #02", Boolean.TRUE, LocalDate.now()));
-        Chore chore = service.getChores().get(0);
-        chore.setDeadline(null);
-        Mockito.when(repository.update(chore)).thenThrow(InvalidDeadlineException.class);
-        assertThrows(InvalidDeadlineException.class,()->service.updateChore(chore));
-    }
-
-    @Test
-    @DisplayName("#updateChore > When deadline  and description is valid > return true")
-    void updateChoreWhenDeadlineAndDescriptionIsValidReturnTrue() {
-        service.getChores().add(new Chore("Chore #01", Boolean.FALSE, LocalDate.now()));
-        service.getChores().add(new Chore("Chore #02", Boolean.TRUE, LocalDate.now()));
-        Chore chore = service.getChores().get(0);
-        chore.setDescription("test update");
-        chore.setDeadline(LocalDate.now().plusDays(5));
-        Mockito.when(repository.update(chore)).thenReturn(Boolean.TRUE);
-        assertTrue(()->service.updateChore(chore));
-    }
-
 }
