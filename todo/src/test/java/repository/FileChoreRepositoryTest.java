@@ -40,17 +40,17 @@ public class FileChoreRepositoryTest {
     @DisplayName("#save > When the file is not found (or path is invalid) > return false ")
     void saveWhenTheFileIsNotFoundOrPathIsInvalidThrowAnException() throws IOException{
         ChoreService service = new ChoreService(repository);
-        List<Chore> chores = service.getChores();
-        Mockito.doThrow(IOException.class).when(mapper).writeValue(new File("todo/src/main/resources/chores.json"), chores);
-        assertFalse(()->repository.save(chores));
+        Chore chore = service.getChores().get(0);
+        Mockito.doThrow(IOException.class).when(mapper).writeValue(new File("todo/src/main/resources/chores.json"), chore);
+        assertFalse(()->repository.save(chore));
     }
 
     @Test
     @DisplayName("#save > When the file is found > return true")
     void saveWhenTheFileIsFoundReturnTrue() throws IOException{
         ChoreService service = new ChoreService(repository);
-        List<Chore> chores = service.getChores();
-        Mockito.doNothing().when(mapper).writeValue(new File("todo/src/main/resources/chores.json"), chores);
-        assertTrue(()->repository.save(chores));
+        Chore chore = service.getChores().get(0);
+        Mockito.doNothing().when(mapper).writeValue(new File("todo/src/main/resources/chores.json"), chore);
+        assertTrue(()->repository.save(chore));
     }
 }

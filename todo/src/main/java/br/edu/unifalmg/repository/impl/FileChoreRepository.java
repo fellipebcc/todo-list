@@ -25,11 +25,7 @@ public class FileChoreRepository implements ChoreRepository {
             // Arrays.asList → Gera uma lista IMUTAVEL
             return new ArrayList<>(
                     Arrays.asList(
-<<<<<<< HEAD
-                            mapper.readValue(new File("todo/src/main/resources/chores.json"), Chore[].class)
-=======
                             mapper.readValue(new File("chores.json"), Chore[].class)
->>>>>>> 8a145508ae9bb84231ccde42183ffa2aff2410b9
                     )
             );
 
@@ -46,15 +42,9 @@ public class FileChoreRepository implements ChoreRepository {
     }
 
     @Override
-<<<<<<< HEAD
-    public boolean save(List<Chore> chores) {
-        try {
-            mapper.writeValue(new File("todo/src/main/resources/chores.json"), chores);
-=======
     public boolean saveAll(List<Chore> chores) {
         try {
             mapper.writeValue(new File("chores.json"), chores);
->>>>>>> 8a145508ae9bb84231ccde42183ffa2aff2410b9
             return true;
         } catch (IOException exception) {
             System.out.println("ERROR: Unable to write the chores on the file.");
@@ -62,12 +52,14 @@ public class FileChoreRepository implements ChoreRepository {
         return false;
     }
 
-<<<<<<< HEAD
-=======
     @Override
     public boolean save(Chore chore) {
         throw new RuntimeException("Operation not supported yet.");
     }
 
->>>>>>> 8a145508ae9bb84231ccde42183ffa2aff2410b9
+    @Override
+    public boolean update(Chore chore) {
+        throw new RuntimeException("Operation not supported yet.");
+    }
+
 }

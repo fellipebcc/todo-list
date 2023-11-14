@@ -1,10 +1,14 @@
 package br.edu.unifalmg.repository.impl;
 
 import br.edu.unifalmg.domain.Chore;
+import br.edu.unifalmg.exception.InvalidDeadlineException;
+import br.edu.unifalmg.exception.InvalidDescriptionException;
 import br.edu.unifalmg.repository.ChoreRepository;
 import br.edu.unifalmg.repository.book.ChoreBook;
+import io.github.cdimascio.dotenv.Dotenv;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -46,6 +50,7 @@ public class MySQLChoreRepository implements ChoreRepository {
                         .description(resultSet.getString("description"))
                         .isCompleted(resultSet.getBoolean("isCompleted"))
                         .deadline(resultSet.getDate("deadline").toLocalDate())
+                        .id(resultSet.getLong("id"))
                         .build();
                 chores.add(chore);
             }
@@ -87,12 +92,46 @@ public class MySQLChoreRepository implements ChoreRepository {
         return false;
     }
 
+    @Override
+    public boolean update(Chore chore) {
+        if (!connectToMySQL()) {
+            return Boolean.FALSE;
+        }
+        if(Objects.isNull(chore.getDescription()) || chore.getDescription().isEmpty()){
+            throw new InvalidDescriptionException("Descrição Inválida");
+        }
+        if(Objects.isNull(chore.getDeadline()) || chore.getDeadline().isBefore(LocalDate.now())){
+            throw new InvalidDeadlineException("Deadline Inválida");
+        }
+        try {
+            preparedStatement = connection.prepareStatement(
+                    ChoreBook.UPDATE_CHORE);
+            preparedStatement.setString(1, chore.getDescription());
+            preparedStatement.setDate(2, Date.valueOf(chore.getDeadline()));
+            preparedStatement.setLong(3,chore.getId());
+
+            int affectedRows = preparedStatement.executeUpdate();
+            if (affectedRows > 0) {
+                return Boolean.TRUE;
+            }
+        } catch (SQLException exception) {
+            System.out.println("Error when updating a chore on database");
+        } finally {
+            closeConnections();
+        }
+
+        return false;
+    }
+
     private boolean connectToMySQL() {
+        Dotenv dotenv = Dotenv.configure().load();
+         String userName = dotenv.get("USER_NAME");
+         String password = dotenv.get("PASSWORD");
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager
-                    .getConnection("jdbc:mysql://localhost:3307/db?"
-                            + "user=rey&password=senha");
+                    .getConnection("jdbc:mysql://localhost:3306/todo_list?"
+                            + "user="+ userName +"&password="+password);
             return Boolean.TRUE;
         } catch (ClassNotFoundException | SQLException exception) {
             System.out.println("Error when connecting to database. Try again later");
