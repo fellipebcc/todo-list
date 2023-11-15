@@ -22,6 +22,8 @@ public class TodoApplication {
 //        service.addChore("Chore #02", LocalDate.now().plusDays(8));
 //        service.toggleChore("Chore #03", LocalDate.now().plusDays(1));
         System.out.println("Tamanho da lista de chores: " + service.getChores().size());
+        service.printChores();
+        System.out.println("\nUpdate chore: " + service.updateChore(service.getChores().get(0)));
 //        service.deleteChore("Chore #02", LocalDate.now().plusDays(8));
 
     }
